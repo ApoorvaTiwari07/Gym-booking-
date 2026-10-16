@@ -1,32 +1,44 @@
-# Gym Slot Booking System
+# PULSE ATHLETICS &mdash; Gym Slot Booking &amp; Facility Operations
 
-A full-stack gym slot booking web application built for the BYTE take-home challenge. Members can browse, book, cancel sessions, and join waitlists, while gym staff manage sessions and check members in using unique codes.
+**Location:** Shalimar Bagh, New Delhi, India  
+**Timings:** 10:00 AM TO 10:00 PM (Monday &ndash; Sunday)  
+**Sole Owner &amp; Director:** Raj Yadav (+91 98101 23456)  
 
----
-
-## Design Note (Stack & Data Model)
-
-This application is built with a Node.js/Express REST backend, an ACID-compliant SQLite relational database (via sql.js with disk persistence), and a responsive Vanilla CSS & React frontend.
-The relational data model consists of four normalized tables:
-- `users` (id, name, email UNIQUE, password_hash, salt, role ['member', 'admin'])
-- `sessions` (id, date, start_hour [0-23], capacity DEFAULT 20, UNIQUE(date, start_hour))
-- `bookings` (id, user_id FK, session_id FK, status ['confirmed', 'cancelled'], code UNIQUE, checked_in [0/1])
-- `waitlist` (id, user_id FK, session_id FK, created_at, UNIQUE(user_id, session_id))
-Concurrency safety and capacity limits (max 20 confirmed bookings per session) are strictly enforced at the database query level inside transactions, preventing race conditions.
+A modern gym slot booking and operations web application. Members can browse scheduled classes, reserve slots with their real contact details (10-digit Indian phone with `+91`), cancel bookings, and view passes. The gym owner, **Raj Yadav**, oversees facility management, records member attendance, and tracks trainer shift hours and session reports.
 
 ---
 
-## Test Accounts & Credentials
+## Live Deployment (Vercel)
 
-The database is pre-seeded with test accounts and sessions across multiple days, including a full session with waitlist capability:
+This repository is pre-configured with `vercel.json` for static edge deployment:
+- **Live URL:** [https://gym-booking-nyqw.vercel.app](https://gym-booking-nyqw.vercel.app)
+- **Framework Preset:** `Other` (Static HTML/CSS/React with client-side persistence)
 
-| Role | Name | Email | Password |
-|---|---|---|---|
-| **Admin** | MR.X (Admin) | `admin@gym.com` | `password123` |
-| **Member** | Maya Chen | `maya@gym.com` | `password123` |
-| **Member** | Liam Patel | `liam@gym.com` | `password123` |
+---
 
-*(Additional pre-seeded members `member1@gym.com` through `member20@gym.com` fill Session 3 to test the full session and waitlist behaviour immediately).*
+## Test Accounts &amp; Credentials
+
+The application includes pre-seeded accounts for testing:
+
+| Role | Name | Email | Password | Phone |
+|---|---|---|---|---|
+| **Gym Owner / Admin** | Raj Yadav | `admin@gym.com` | `password123` | `+91 98101 23456` |
+| **Member** | Krish Chhabra | `krish.chhabra@gmail.com` | `password123` | `+91 98112 34567` |
+| **Member** | Priya Tiwari | `priya.t@gmail.com` | `password123` | `+91 98765 43210` |
+| **Member** | Arjun Sharma | `arjun.sharma@gmail.com` | `password123` | `+91 98234 56789` |
+
+*Note: Any new user who creates an account on the registration page will be logged in with their own exact name, email, and 10-digit Indian mobile number.*
+
+---
+
+## Certified Coaching Staff (Reporting to Raj Yadav)
+
+| Coach | Role / Speciality | Shift Timing | Weekly Hours | Rating |
+|---|---|---|---|---|
+| **Arjun Sharma** | Senior Strength Coach &middot; Barbell Powerlifting | 10:00 AM - 04:00 PM | 36 hrs | 4.9 ★ |
+| **Priya Tiwari** | Lead Yoga &middot; Vinyasa Flow &amp; Spine Mobility | 04:00 PM - 10:00 PM | 30 hrs | 5.0 ★ |
+| **Krish Chhabra** | Conditioning Coach &middot; Functional Boxing &amp; HIIT | 11:00 AM - 07:00 PM | 40 hrs | 4.8 ★ |
+| **Rohan Verma** | Endurance Specialist &middot; Rhythm Indoor Cycling | 02:00 PM - 09:00 PM | 35 hrs | 4.9 ★ |
 
 ---
 
@@ -39,8 +51,8 @@ The database is pre-seeded with test accounts and sessions across multiple days,
 ### Quick Start
 1. Clone the repository and navigate into the project directory:
    ```bash
-   git clone <YOUR_REPOSITORY_URL>
-   cd <REPOSITORY_FOLDER>
+   git clone https://github.com/ApoorvaTiwari07/Gym-booking-.git
+   cd Gym-booking-
    ```
 2. Install dependencies:
    ```bash
@@ -55,59 +67,24 @@ The database is pre-seeded with test accounts and sessions across multiple days,
    http://localhost:3000
    ```
 
-The Express server serves both the backend REST API and the frontend web application seamlessly on the same port.
-
 ---
 
-## Live Deployment (Vercel / Web)
+## Core Features &amp; Architecture
 
-This repository is pre-configured with `vercel.json` for **1-click instant deployment**:
-1. Go to [vercel.com](https://vercel.com) and log in with your GitHub account.
-2. Click **"Add New Project"** and select `Gym-booking-` (`ApoorvaTiwari07/Gym-booking-`).
-3. Leave all default settings (Framework preset: *Other* or *Static*) and click **Deploy**.
-4. Your application will be live immediately at `https://gym-booking-[your-username].vercel.app` accessible to anyone on the web!
+1. **Authentication &amp; User Profile**:
+   - Real member registration capturing Full Name, Email, 10-digit Indian mobile (`+91`), training goals, and password.
+   - Dynamic user session displaying the member's real name and avatar initials across the app.
+   - Admin access reserved for gym owner **Raj Yadav**.
 
-Alternatively, deploy directly from your terminal using Vercel CLI:
-```bash
-npx vercel --prod
-```
+2. **Session Scheduling (10 AM &ndash; 10 PM)**:
+   - All classes scheduled within the gym's daily operating hours (10:00 AM to 10:00 PM).
+   - Filter by date, category (Strength, HIIT, Yoga, Cycling), or slot availability.
 
----
+3. **Slot Booking Modal**:
+   - Interactive booking popup capturing Attendee Full Name, Email, Phone, and optional workout/health notes for the coach.
+   - Real-time seat decrementing and unique pass code generation (e.g. `PA-7102`).
 
-## Core Features & Business Logic
-
-1. **Authentication & Roles**:
-   - Secure registration: Full name, unique email, and hashed passwords using PBKDF2 with unique cryptographic salt.
-   - Two roles: Members book for themselves; Admins manage sessions and record attendance.
-   - Admin accounts are created directly in the database and can never be registered via the registration route.
-   - Protected client-side and server-side routes (members cannot access admin APIs or the admin view).
-
-2. **Session Scheduling**:
-   - Sessions start on the hour (0 to 23), last exactly 1 hour, and have a capacity of 20.
-   - The database enforces `UNIQUE(date, start_hour)` so two sessions can never share a start time.
-   - Members can filter sessions by date and view remaining seats updating in real time.
-
-3. **Concurrency-Safe Booking**:
-   - A member can book any upcoming session that has not started and has free seats.
-   - Checks active bookings count inside database transactions to ensure sessions never exceed 20 confirmed bookings even under simultaneous requests.
-   - Enforces one active booking per member per session.
-   - Optimistic UI updates with instant feedback and automatic rollback on error.
-
-4. **Automatic Waitlist Promotion**:
-   - When a session is full (20/20 seats), members can join its waitlist.
-   - When a member cancels an upcoming booking, the first person on the waitlist is automatically promoted and assigned a confirmed booking, and their spot on the waitlist is released.
-   - Nobody is promoted into a session that has already started.
-
-5. **Cryptographic Check-in**:
-   - Every confirmed booking receives a unique, unguessable 6-character alphanumeric code (e.g., `7XKP2Q`).
-   - Admins enter the code to mark attendance.
-   - Codes work only once, only during the session's active hour, and never for cancelled bookings.
-
----
-
-## Assumptions & Design Decisions
-
-- **Database Choice**: SQLite (`sql.js`) was chosen because it provides a genuine, ACID-compliant relational SQL database with real tables, foreign keys, and unique constraints, while allowing the project to run out-of-the-box on any reviewer's machine without requiring external Docker or cloud database setup.
-- **Session Duration**: Sessions are strictly 1 hour long and start on the hour (0-23).
-- **Check-in Window**: Check-in codes are valid strictly during the scheduled session hour (from start time to start time + 60 minutes).
-- **Waitlist Order**: Waitlist promotion follows strict First-In, First-Out (FIFO) ordering based on waitlist entry ID / timestamp.
+4. **Owner Management &amp; Trainer Reports**:
+   - Raj Yadav oversees facility operations and trainer shift reports.
+   - Tracks weekly shift hours, sessions taken, and client feedback for each coach.
+   - Session roster tool to mark members as **Present** or **Absent**.

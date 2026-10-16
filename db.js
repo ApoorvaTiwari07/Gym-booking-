@@ -103,25 +103,30 @@ function createTables() {
 }
 
 function seedData() {
-  // 1. Seed Admin (Created directly in DB, never via registration)
   const adminAuth = hashPassword('password123');
   dbInstance.run(
     'INSERT INTO users (name, email, password_hash, salt, role) VALUES (?, ?, ?, ?, ?)',
-    ['MR.X (Admin)', 'admin@gym.com', adminAuth.hash, adminAuth.salt, 'admin']
+    ['Raj Yadav (Owner)', 'admin@gym.com', adminAuth.hash, adminAuth.salt, 'admin']
   );
 
-  // 2. Seed Members
-  const mayaAuth = hashPassword('password123');
+  const krishAuth = hashPassword('password123');
   dbInstance.run(
     'INSERT INTO users (name, email, password_hash, salt, role) VALUES (?, ?, ?, ?, ?)',
-    ['Maya Chen', 'maya@gym.com', mayaAuth.hash, mayaAuth.salt, 'member']
+    ['Krish Chhabra', 'krish.chhabra@gmail.com', krishAuth.hash, krishAuth.salt, 'member']
   );
 
-  const liamAuth = hashPassword('password123');
+  const priyaAuth = hashPassword('password123');
   dbInstance.run(
     'INSERT INTO users (name, email, password_hash, salt, role) VALUES (?, ?, ?, ?, ?)',
-    ['Liam Patel', 'liam@gym.com', liamAuth.hash, liamAuth.salt, 'member']
+    ['Priya Tiwari', 'priya.t@gmail.com', priyaAuth.hash, priyaAuth.salt, 'member']
   );
+
+  const arjunAuth = hashPassword('password123');
+  dbInstance.run(
+    'INSERT INTO users (name, email, password_hash, salt, role) VALUES (?, ?, ?, ?, ?)',
+    ['Arjun Sharma', 'arjun.sharma@gmail.com', arjunAuth.hash, arjunAuth.salt, 'member']
+  );
+
 
   // Additional members to fill Session 3
   for (let i = 1; i <= 20; i++) {
