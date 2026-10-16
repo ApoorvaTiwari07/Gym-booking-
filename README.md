@@ -59,6 +59,21 @@ The Express server serves both the backend REST API and the frontend web applica
 
 ---
 
+## Live Deployment (Vercel / Web)
+
+This repository is pre-configured with `vercel.json` for **1-click instant deployment**:
+1. Go to [vercel.com](https://vercel.com) and log in with your GitHub account.
+2. Click **"Add New Project"** and select `Gym-booking-` (`ApoorvaTiwari07/Gym-booking-`).
+3. Leave all default settings (Framework preset: *Other* or *Static*) and click **Deploy**.
+4. Your application will be live immediately at `https://gym-booking-[your-username].vercel.app` accessible to anyone on the web!
+
+Alternatively, deploy directly from your terminal using Vercel CLI:
+```bash
+npx vercel --prod
+```
+
+---
+
 ## Core Features & Business Logic
 
 1. **Authentication & Roles**:

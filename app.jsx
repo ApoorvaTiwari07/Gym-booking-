@@ -5,9 +5,6 @@
 
 const { useState, useEffect } = React;
 
-// --------------------------------------------------------------------------
-// 1. Initial Sample Data (Matches Figma mockups)
-// --------------------------------------------------------------------------
 const INITIAL_USERS = [
   { id: 1, name: "Maya Chen", email: "maya.chen@example.com", role: "member" },
   { id: 2, name: "Liam Patel", email: "liam.patel@example.com", role: "member" },
@@ -383,10 +380,10 @@ function Header({ currentPage, setCurrentPage, currentUser, onLogout, myBookings
   // Extract initials for avatar circle (e.g., Maya Chen -> MC)
   const initials = currentUser
     ? currentUser.name
-        .split(" ")
-        .map((n) => n[0])
-        .join("")
-        .toUpperCase()
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase()
     : "G";
 
   return (
@@ -862,9 +859,8 @@ function MyBookingsPage({ myBookings, pastSessions, onCancelBooking, onBrowseSes
                 <td className="cell-primary">{p.title}</td>
                 <td>
                   <span
-                    className={`badge ${
-                      p.status === "Completed" ? "badge-outline" : "badge-outline"
-                    }`}
+                    className={`badge ${p.status === "Completed" ? "badge-outline" : "badge-outline"
+                      }`}
                   >
                     {p.status}
                   </span>
@@ -1092,13 +1088,12 @@ function AdminPage({ sessions, onCreateSession, attendanceList, setAttendanceLis
                     </td>
                     <td>
                       <span
-                        className={`badge ${
-                          m.status === "Present"
-                            ? "badge-green"
-                            : m.status === "Absent"
+                        className={`badge ${m.status === "Present"
+                          ? "badge-green"
+                          : m.status === "Absent"
                             ? "badge-red"
                             : ""
-                        }`}
+                          }`}
                       >
                         {m.status}
                       </span>
@@ -1107,18 +1102,16 @@ function AdminPage({ sessions, onCreateSession, attendanceList, setAttendanceLis
                       <div className="attendance-btn-group">
                         <button
                           type="button"
-                          className={`attendance-btn ${
-                            m.status === "Present" ? "selected-present" : ""
-                          }`}
+                          className={`attendance-btn ${m.status === "Present" ? "selected-present" : ""
+                            }`}
                           onClick={() => handleMarkAttendance(m.id, "Present")}
                         >
                           Present
                         </button>
                         <button
                           type="button"
-                          className={`attendance-btn ${
-                            m.status === "Absent" ? "selected-absent" : ""
-                          }`}
+                          className={`attendance-btn ${m.status === "Absent" ? "selected-absent" : ""
+                            }`}
                           onClick={() => handleMarkAttendance(m.id, "Absent")}
                         >
                           Absent
