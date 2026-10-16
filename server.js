@@ -461,13 +461,17 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start server after initializing DB
-db.initDB()
-  .then(() => {
-    app.listen(PORT, () => {
-      console.log(`Gymbook API & Frontend running at http://localhost:${PORT}`);
+if (require.main === module) {
+  db.initDB()
+    .then(() => {
+      app.listen(PORT, () => {
+        console.log(`Gymbook API & Frontend running at http://localhost:${PORT}`);
+      });
+    })
+    .catch((err) => {
+      console.error('Failed to initialize database:', err);
     });
-  })
-  .catch((err) => {
-    console.error('Failed to initialize database:', err);
-  });
+}
+
+module.exports = app;
+
