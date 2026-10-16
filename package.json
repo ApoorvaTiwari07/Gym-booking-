@@ -1,0 +1,14 @@
+{
+  "name": "gym-slot-booking",
+  "version": "1.0.0",
+  "description": "Gym slot booking web application - BYTE take-home challenge",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "express": "^5.3.0",
+    "sql.js": "^1.15.0"
+  }
+}
