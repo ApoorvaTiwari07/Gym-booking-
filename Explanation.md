@@ -41,8 +41,8 @@ A walkthrough of the **Pulse Athletics** website. Built using clean, modern **HT
 
 ## 3. Tech Stack & File Structure
 
-- **`index.html`**: Semantic HTML5 markup, Google Font (Plus Jakarta Sans), and React 18 client bundle.
-- **`style.css`**: Vanilla CSS with customized design tokens, responsive grids, timing pill indicators, and human-designed typography.
-- **`app.jsx`**: Modular React application managing client-side state, form validation, and `localStorage` persistence.
+- **`index.html`**: Semantic HTML5 markup, Courier Prime typewriter font from Google Fonts, and React 18 client bundle.
+- **`style.css`**: Strict black-and-white minimalist design system with human-typed Courier Prime typography and high-contrast responsive layouts.
+- **`app.jsx`**: Modular React application managing client-side state, owner-only admin route guarding, and `localStorage` persistence.
 - **`vercel.json`**: Static edge deployment configuration for zero-cold-start web hosting.
 - **`server.js` & `db.js`**: Node.js/Express REST server with SQLite database for optional local full-stack execution.

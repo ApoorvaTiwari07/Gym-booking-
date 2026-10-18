@@ -27,7 +27,7 @@ The application includes pre-seeded accounts for testing:
 | **Member** | Priya Tiwari | `priya.t@gmail.com` | `password123` | `+91 98765 43210` |
 | **Member** | Arjun Sharma | `arjun.sharma@gmail.com` | `password123` | `+91 98234 56789` |
 
-*Note: Any new user who creates an account on the registration page will be logged in with their own exact name, email, and 10-digit Indian mobile number.*
+*Note: Enrolling as a gym member hides the Admin bar completely; only the gym owner (Raj Yadav) can view and access the Admin Operations page.*
 
 ---
 
@@ -71,10 +71,10 @@ The application includes pre-seeded accounts for testing:
 
 ## Core Features &amp; Architecture
 
-1. **Authentication &amp; User Profile**:
-   - Real member registration capturing Full Name, Email, 10-digit Indian mobile (`+91`), training goals, and password.
-   - Dynamic user session displaying the member's real name and avatar initials across the app.
-   - Admin access reserved for gym owner **Raj Yadav**.
+1. **Authentication & Role-Based Access Control**:
+   - Real member enrollment capturing Full Name, Email, 10-digit Indian mobile (`+91`), training goals, and password.
+   - **Admin Bar Restriction**: The Admin navigation bar and operations dashboard are strictly hidden from regular enrolled members and only accessible to gym owner **Raj Yadav**.
+   - Typewriter font (**Courier Prime**) with a clean, high-contrast **black and white** color palette for an authentic human-typed aesthetic.
 
 2. **Session Scheduling (10 AM &ndash; 10 PM)**:
    - All classes scheduled within the gym's daily operating hours (10:00 AM to 10:00 PM).

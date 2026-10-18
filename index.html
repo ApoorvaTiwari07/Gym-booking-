@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pulse Athletics &mdash; Shalimar Bagh, New Delhi | Gym Slot Booking &amp; Operations</title>
-  <meta name="description" content="Pulse Athletics, Shalimar Bagh, New Delhi. Open 10 AM to 10 PM. Reserve training slots, track attendance, and view trainer reports managed by Raj Yadav." />
+  <title>Pulse Athletics - Shalimar Bagh, New Delhi</title>
+  <meta name="description" content="Pulse Athletics gym slot booking. Shalimar Bagh, New Delhi. Open 10:00 AM to 10:00 PM." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 
   <script src="vendor/react.min.js"></script>
@@ -28,64 +28,60 @@
 const { useState, useEffect } = React;
 
 const INITIAL_USERS = [
-  { id: 1, name: "Raj Yadav", email: "admin@gym.com", phone: "+91 98101 23456", role: "admin", goal: "Gym Owner & Director" },
-  { id: 2, name: "Krish Chhabra", email: "krish.chhabra@gmail.com", phone: "+91 98112 34567", role: "member", goal: "HIIT & Agility" },
-  { id: 3, name: "Priya Tiwari", email: "priya.t@gmail.com", phone: "+91 98765 43210", role: "member", goal: "Yoga & Flexibility" },
-  { id: 4, name: "Arjun Sharma", email: "arjun.sharma@gmail.com", phone: "+91 98234 56789", role: "member", goal: "Strength & Power" }
+  { id: 1, name: "Raj Yadav", email: "admin@gym.com", phone: "+91 98101 23456", role: "admin", goal: "Gym Owner" },
+  { id: 2, name: "Krish Chhabra", email: "krish.chhabra@gmail.com", phone: "+91 98112 34567", role: "member", goal: "HIIT and Agility" },
+  { id: 3, name: "Priya Tiwari", email: "priya.t@gmail.com", phone: "+91 98765 43210", role: "member", goal: "Yoga and Flexibility" },
+  { id: 4, name: "Arjun Sharma", email: "arjun.sharma@gmail.com", phone: "+91 98234 56789", role: "member", goal: "Strength Training" }
 ];
 
 const INITIAL_TRAINERS = [
   {
     id: 1,
     name: "Arjun Sharma",
-    role: "Senior Strength Coach",
+    role: "Strength Trainer",
     email: "arjun@pulseathletics.in",
     phone: "+91 98234 56789",
-    specialty: "Powerlifting & Barbell Hypertrophy",
+    specialty: "Powerlifting and Barbell Exercises",
     shift: "10:00 AM - 04:00 PM",
     weeklyHours: 36,
     sessionsTakenWeek: 12,
-    rating: "4.9 ★",
-    bio: "Certified strength specialist leading heavy compound lifts and progressive overload programming."
+    rating: "4.9 / 5"
   },
   {
     id: 2,
     name: "Priya Tiwari",
-    role: "Lead Yoga & Mobility Coach",
+    role: "Yoga Instructor",
     email: "priya@pulseathletics.in",
     phone: "+91 98765 43210",
-    specialty: "Vinyasa Flow, Spine Rehab & Mobility",
+    specialty: "Vinyasa Flow and Mobility",
     shift: "04:00 PM - 10:00 PM",
     weeklyHours: 30,
     sessionsTakenWeek: 10,
-    rating: "5.0 ★",
-    bio: "Focuses on athletic mobility, injury rehabilitation, and deep functional flexibility."
+    rating: "5.0 / 5"
   },
   {
     id: 3,
     name: "Krish Chhabra",
-    role: "Conditioning & Boxing Coach",
+    role: "Conditioning Trainer",
     email: "krish@pulseathletics.in",
     phone: "+91 98112 34567",
-    specialty: "HIIT, Functional Boxing & Agility",
+    specialty: "HIIT and Boxing",
     shift: "11:00 AM - 07:00 PM",
     weeklyHours: 40,
     sessionsTakenWeek: 14,
-    rating: "4.8 ★",
-    bio: "High-energy coach specializing in speed, core strength, combat conditioning, and cardio endurance."
+    rating: "4.8 / 5"
   },
   {
     id: 4,
     name: "Rohan Verma",
-    role: "Indoor Cycling & Cardio Specialist",
+    role: "Cycling Coach",
     email: "rohan@pulseathletics.in",
     phone: "+91 98991 23456",
-    specialty: "Rhythm Cycling & VO2 Max Endurance",
+    specialty: "Indoor Cycling and Cardio",
     shift: "02:00 PM - 09:00 PM",
     weeklyHours: 35,
     sessionsTakenWeek: 11,
-    rating: "4.9 ★",
-    bio: "Certified endurance trainer guiding rhythm-based cadence cycling and stamina building."
+    rating: "4.9 / 5"
   }
 ];
 
@@ -98,75 +94,62 @@ const INITIAL_SESSIONS = [
     displayDate: "Sat, 17 Oct",
     startTime: "10:30 AM",
     endTime: "11:30 AM",
-    location: "Studio A (Weights)",
+    location: "Studio A",
     category: "Strength",
     capacity: 12,
     bookedCount: 8
   },
   {
     id: 2,
-    title: "Combat Conditioning & HIIT",
+    title: "HIIT and Boxing",
     coach: "Krish Chhabra",
     date: "2026-10-17",
     displayDate: "Sat, 17 Oct",
     startTime: "12:00 PM",
     endTime: "01:00 PM",
-    location: "Studio B (Functional)",
+    location: "Studio B",
     category: "HIIT",
     capacity: 10,
     bookedCount: 7
   },
   {
     id: 3,
-    title: "Vinyasa Mobility & Spine Reset",
+    title: "Yoga and Mobility",
     coach: "Priya Tiwari",
     date: "2026-10-17",
     displayDate: "Sat, 17 Oct",
     startTime: "05:00 PM",
     endTime: "06:00 PM",
-    location: "Studio A (Recovery)",
+    location: "Studio A",
     category: "Yoga",
     capacity: 15,
     bookedCount: 9
   },
   {
     id: 4,
-    title: "Endurance Cycle Tempo",
+    title: "Indoor Cycling",
     coach: "Rohan Verma",
     date: "2026-10-17",
     displayDate: "Sat, 17 Oct",
     startTime: "07:00 PM",
     endTime: "08:00 PM",
-    location: "Cycle Arena",
+    location: "Cycle Room",
     category: "Cycling",
     capacity: 12,
     bookedCount: 12
   },
   {
     id: 5,
-    title: "Upper Body Hypertrophy",
+    title: "Upper Body Strength",
     coach: "Arjun Sharma",
     date: "2026-10-18",
     displayDate: "Sun, 18 Oct",
     startTime: "11:00 AM",
     endTime: "12:00 PM",
-    location: "Studio A (Weights)",
+    location: "Studio A",
     category: "Strength",
     capacity: 12,
     bookedCount: 4
-  },
-  {
-    id: 6,
-    title: "Evening High-Intensity Burn",
-    coach: "Krish Chhabra",
-    date: "2026-10-18",
-    displayDate: "Sun, 18 Oct",
-    startTime: "08:00 PM",
-    endTime: "09:00 PM",
-    location: "Studio B (Functional)",
-    category: "HIIT",
-    capacity: 10,
-    bookedCount: 2
   }
 ];
 
@@ -180,13 +163,13 @@ const INITIAL_ALL_BOOKINGS = [
     userName: "Krish Chhabra",
     userEmail: "krish.chhabra@gmail.com",
     userPhone: "+91 98112 34567",
-    notes: "Focusing on overhead press and bench form",
+    notes: "Bench press form check",
     month: "OCT",
     day: "17",
     fullDate: "Saturday, 17 October 2026",
     startTime: "10:30 AM",
     endTime: "11:30 AM",
-    location: "Studio A (Weights)",
+    location: "Studio A",
     isToday: true,
     status: "Confirmed",
     attendance: "Present"
@@ -200,36 +183,16 @@ const INITIAL_ALL_BOOKINGS = [
     userName: "Priya Tiwari",
     userEmail: "priya.t@gmail.com",
     userPhone: "+91 98765 43210",
-    notes: "Warm-up wrist stretch needed",
+    notes: "Warm up stretch",
     month: "OCT",
     day: "17",
     fullDate: "Saturday, 17 October 2026",
     startTime: "10:30 AM",
     endTime: "11:30 AM",
-    location: "Studio A (Weights)",
+    location: "Studio A",
     isToday: true,
     status: "Confirmed",
     attendance: "Present"
-  },
-  {
-    id: 103,
-    bookingCode: "PA-7104",
-    sessionId: 1,
-    title: "Strength Foundations",
-    coach: "Arjun Sharma",
-    userName: "Arjun Sharma",
-    userEmail: "arjun.sharma@gmail.com",
-    userPhone: "+91 98234 56789",
-    notes: "",
-    month: "OCT",
-    day: "17",
-    fullDate: "Saturday, 17 October 2026",
-    startTime: "10:30 AM",
-    endTime: "11:30 AM",
-    location: "Studio A (Weights)",
-    isToday: true,
-    status: "Confirmed",
-    attendance: "Not marked"
   }
 ];
 
@@ -238,13 +201,6 @@ const INITIAL_PAST_SESSIONS = [
     id: 201,
     date: "Thu, 15 Oct · 11:00 AM - 12:00 PM",
     title: "Strength Foundations",
-    status: "Completed",
-    attendance: "Attended"
-  },
-  {
-    id: 202,
-    date: "Tue, 13 Oct · 06:00 PM - 07:00 PM",
-    title: "Combat Conditioning & HIIT",
     status: "Completed",
     attendance: "Attended"
   }
@@ -267,32 +223,32 @@ function App() {
   const [currentPage, setCurrentPage] = useState("sessions");
 
   const [users, setUsers] = useState(() => {
-    const saved = localStorage.getItem("pa_users");
+    const saved = localStorage.getItem("pa_bw_users");
     return saved ? JSON.parse(saved) : INITIAL_USERS;
   });
 
   const [currentUser, setCurrentUser] = useState(() => {
-    const saved = localStorage.getItem("pa_user");
+    const saved = localStorage.getItem("pa_bw_user");
     return saved ? JSON.parse(saved) : null;
   });
 
   const [sessions, setSessions] = useState(() => {
-    const saved = localStorage.getItem("pa_sessions");
+    const saved = localStorage.getItem("pa_bw_sessions");
     return saved ? JSON.parse(saved) : INITIAL_SESSIONS;
   });
 
   const [trainers, setTrainers] = useState(() => {
-    const saved = localStorage.getItem("pa_trainers");
+    const saved = localStorage.getItem("pa_bw_trainers");
     return saved ? JSON.parse(saved) : INITIAL_TRAINERS;
   });
 
   const [allBookings, setAllBookings] = useState(() => {
-    const saved = localStorage.getItem("pa_all_bookings");
+    const saved = localStorage.getItem("pa_bw_all_bookings");
     return saved ? JSON.parse(saved) : INITIAL_ALL_BOOKINGS;
   });
 
   const [pastSessions, setPastSessions] = useState(() => {
-    const saved = localStorage.getItem("pa_past");
+    const saved = localStorage.getItem("pa_bw_past");
     return saved ? JSON.parse(saved) : INITIAL_PAST_SESSIONS;
   });
 
@@ -301,45 +257,52 @@ function App() {
 
   useEffect(() => {
     if (currentUser) {
-      localStorage.setItem("pa_user", JSON.stringify(currentUser));
+      localStorage.setItem("pa_bw_user", JSON.stringify(currentUser));
     } else {
-      localStorage.removeItem("pa_user");
+      localStorage.removeItem("pa_bw_user");
     }
   }, [currentUser]);
 
   useEffect(() => {
-    localStorage.setItem("pa_users", JSON.stringify(users));
+    localStorage.setItem("pa_bw_users", JSON.stringify(users));
   }, [users]);
 
   useEffect(() => {
-    localStorage.setItem("pa_sessions", JSON.stringify(sessions));
+    localStorage.setItem("pa_bw_sessions", JSON.stringify(sessions));
   }, [sessions]);
 
   useEffect(() => {
-    localStorage.setItem("pa_trainers", JSON.stringify(trainers));
+    localStorage.setItem("pa_bw_trainers", JSON.stringify(trainers));
   }, [trainers]);
 
   useEffect(() => {
-    localStorage.setItem("pa_all_bookings", JSON.stringify(allBookings));
+    localStorage.setItem("pa_bw_all_bookings", JSON.stringify(allBookings));
   }, [allBookings]);
 
   useEffect(() => {
-    localStorage.setItem("pa_past", JSON.stringify(pastSessions));
+    localStorage.setItem("pa_bw_past", JSON.stringify(pastSessions));
   }, [pastSessions]);
 
-  function showToast(message, type = "success") {
+  // Restrict admin page access exclusively to owner (Raj Yadav)
+  useEffect(() => {
+    if (currentPage === "admin" && (!currentUser || currentUser.role !== "admin")) {
+      setCurrentPage("sessions");
+    }
+  }, [currentPage, currentUser]);
+
+  function showToast(message) {
     const id = Date.now() + Math.random();
-    setToasts((prev) => [...prev, { id, message, type }]);
+    setToasts((prev) => [...prev, { id, message }]);
     setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id));
-    }, 4000);
+    }, 3500);
   }
 
   function handleRegisterUser(newUserData) {
     const trimmedEmail = newUserData.email.trim().toLowerCase();
     const existing = users.find((u) => u.email.toLowerCase() === trimmedEmail);
     if (existing) {
-      return { success: false, error: "An account with this email address already exists." };
+      return { success: false, error: "An account with this email already exists." };
     }
 
     const formattedPhone = formatIndianPhone(newUserData.phone);
@@ -348,14 +311,14 @@ function App() {
       name: newUserData.name.trim(),
       email: trimmedEmail,
       phone: formattedPhone,
-      goal: newUserData.goal || "General Strength & Fitness",
-      role: trimmedEmail === "admin@gym.com" || trimmedEmail.includes("owner") ? "admin" : "member"
+      goal: newUserData.goal || "General Fitness",
+      role: trimmedEmail === "admin@gym.com" ? "admin" : "member"
     };
 
     setUsers((prev) => [...prev, created]);
     setCurrentUser(created);
     setCurrentPage(created.role === "admin" ? "admin" : "sessions");
-    showToast(`Welcome, ${created.name}! Your account is now active.`);
+    showToast("Account created successfully. Welcome, " + created.name);
     return { success: true };
   }
 
@@ -366,7 +329,7 @@ function App() {
     if (foundUser) {
       setCurrentUser(foundUser);
       setCurrentPage(foundUser.role === "admin" ? "admin" : "sessions");
-      showToast(`Logged in as ${foundUser.name}`);
+      showToast("Signed in as " + foundUser.name);
       return { success: true };
     }
 
@@ -377,29 +340,29 @@ function App() {
         email: "admin@gym.com",
         phone: "+91 98101 23456",
         role: "admin",
-        goal: "Gym Owner & Director"
+        goal: "Gym Owner"
       };
       setCurrentUser(ownerUser);
       setCurrentPage("admin");
-      showToast("Signed in as Gym Owner (Raj Yadav).");
+      showToast("Signed in as Gym Owner (Raj Yadav)");
       return { success: true };
     }
 
     return {
       success: false,
-      error: "Account not found with this email. Please register on the right side."
+      error: "Account not found. Please register your name and email on the right side."
     };
   }
 
   function handleLogout() {
     setCurrentUser(null);
     setCurrentPage("sessions");
-    showToast("You have been signed out.");
+    showToast("Signed out successfully.");
   }
 
   function handleOpenBookingModal(session) {
     if (session.bookedCount >= session.capacity) {
-      showToast("This session has reached capacity.", "error");
+      showToast("Session is already full.");
       return;
     }
     setSelectedSessionForBooking(session);
@@ -410,7 +373,7 @@ function App() {
     if (!session) return;
 
     if (session.bookedCount >= session.capacity) {
-      showToast("Session is already full.", "error");
+      showToast("Session is full.");
       setSelectedSessionForBooking(null);
       return;
     }
@@ -419,7 +382,7 @@ function App() {
       prev.map((s) => (s.id === session.id ? { ...s, bookedCount: s.bookedCount + 1 } : s))
     );
 
-    const bookingCode = `PA-${Math.floor(1000 + Math.random() * 9000)}`;
+    const bookingCode = "PA-" + Math.floor(1000 + Math.random() * 9000);
     const formattedPhone = formatIndianPhone(bookingFormData.phone);
 
     const newBooking = {
@@ -432,13 +395,13 @@ function App() {
       userEmail: bookingFormData.email.trim(),
       userPhone: formattedPhone,
       notes: bookingFormData.notes || "",
-      month: session.displayDate.split(" ")[2] ? session.displayDate.split(" ")[2].toUpperCase() : "OCT",
-      day: session.displayDate.split(" ")[1] || "17",
-      fullDate: `${session.displayDate} 2026`,
+      month: "OCT",
+      day: "17",
+      fullDate: session.displayDate + " 2026",
       startTime: session.startTime,
       endTime: session.endTime,
       location: session.location,
-      isToday: session.displayDate.includes("17"),
+      isToday: true,
       status: "Confirmed",
       attendance: "Not marked"
     };
@@ -459,7 +422,7 @@ function App() {
     }
 
     setSelectedSessionForBooking(null);
-    showToast(`Slot booked for ${bookingFormData.name}! Ref: ${bookingCode}`);
+    showToast("Slot booked for " + bookingFormData.name + ". Ref: " + bookingCode);
   }
 
   function handleCancelBooking(bookingId, sessionId) {
@@ -479,7 +442,7 @@ function App() {
     setPastSessions((prev) => [
       {
         id: Date.now(),
-        date: `${bookingToCancel.fullDate} · ${bookingToCancel.startTime} - ${bookingToCancel.endTime}`,
+        date: bookingToCancel.fullDate + " · " + bookingToCancel.startTime + " - " + bookingToCancel.endTime,
         title: bookingToCancel.title,
         status: "Cancelled",
         attendance: "Not applicable"
@@ -487,7 +450,7 @@ function App() {
       ...prev
     ]);
 
-    showToast("Booking cancelled and slot released.");
+    showToast("Booking cancelled.");
   }
 
   function handleCreateSession(sessionData) {
@@ -495,7 +458,7 @@ function App() {
       id: Date.now(),
       title: sessionData.title.trim(),
       date: sessionData.date,
-      displayDate: formatDisplayDate(sessionData.date),
+      displayDate: sessionData.date,
       startTime: sessionData.startTime,
       endTime: sessionData.endTime,
       coach: sessionData.coach,
@@ -506,26 +469,25 @@ function App() {
     };
 
     setSessions((prev) => [newSession, ...prev]);
-    showToast(`Class "${newSession.title}" added to schedule!`);
+    showToast("New session added to schedule.");
   }
 
   function handleAddTrainer(newTrainerData) {
     const newTrainer = {
       id: Date.now(),
       name: newTrainerData.name.trim(),
-      role: newTrainerData.role.trim() || "Trainer & Coach",
+      role: newTrainerData.role.trim() || "Trainer",
       email: newTrainerData.email.trim(),
       phone: formatIndianPhone(newTrainerData.phone),
       specialty: newTrainerData.specialty.trim(),
-      shift: newTrainerData.shift || "10:00 AM - 06:00 PM",
+      shift: newTrainerData.shift || "10:00 AM - 04:00 PM",
       weeklyHours: Number(newTrainerData.weeklyHours) || 36,
       sessionsTakenWeek: 0,
-      rating: "5.0 ★",
-      bio: newTrainerData.bio.trim() || "Certified fitness instructor at Pulse Athletics, Shalimar Bagh."
+      rating: "5.0 / 5"
     };
 
     setTrainers((prev) => [...prev, newTrainer]);
-    showToast(`Coach ${newTrainer.name} registered under Raj Yadav.`);
+    showToast("Trainer " + newTrainer.name + " added successfully.");
   }
 
   function handleMarkAttendance(bookingId, status) {
@@ -544,28 +506,67 @@ function App() {
 
   return (
     <div>
-      <div className="topbar-announcement">
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <span className="timing-indicator">
-            <span className="timing-dot"></span>
-            TIMINGS: 10:00 AM TO 10:00 PM (DAILY)
-          </span>
-          <span className="location-tag">
-            📍 Shalimar Bagh, New Delhi, India
-          </span>
+      <div className="topbar-info">
+        <div>
+          <strong>Gym Timings: 10:00 AM TO 10:00 PM</strong> | Address: PULSE ATHLETICS, Shalimar Bagh, New Delhi, India
         </div>
-        <div style={{ fontSize: "12px", color: "#9ca3af" }}>
-          Owner & Director: <strong>Raj Yadav</strong> &middot; +91 98101 23456
+        <div>
+          Owner: Raj Yadav (+91 98101 23456)
         </div>
       </div>
 
-      <Navigation
-        currentUser={currentUser}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        onLogout={handleLogout}
-        myBookingsCount={userBookings.length}
-      />
+      <header className="topbar">
+        <div className="topbar-inner">
+          <div className="brand-section">
+            <div className="logo" onClick={() => setCurrentPage("sessions")}>
+              <span className="brand-title">PULSE ATHLETICS</span>
+              <span className="brand-subtitle">Shalimar Bagh, New Delhi</span>
+            </div>
+
+            <nav className="nav-links">
+              <button
+                className={"nav-link " + (currentPage === "sessions" ? "active" : "")}
+                onClick={() => setCurrentPage("sessions")}
+              >
+                Sessions Schedule
+              </button>
+              <button
+                className={"nav-link " + (currentPage === "my-bookings" ? "active" : "")}
+                onClick={() => setCurrentPage("my-bookings")}
+              >
+                My Bookings {userBookings.length > 0 ? "(" + userBookings.length + ")" : ""}
+              </button>
+              {currentUser && currentUser.role === "admin" && (
+                <button
+                  className={"nav-link " + (currentPage === "admin" ? "active" : "")}
+                  onClick={() => setCurrentPage("admin")}
+                >
+                  Admin (Raj Yadav)
+                </button>
+              )}
+            </nav>
+          </div>
+
+          <div className="topbar-right">
+            {currentUser ? (
+              <div className="user-badge">
+                <span className="user-name">{currentUser.name}</span>
+                <span className="user-role-tag">({currentUser.role === "admin" ? "Owner" : "Member"})</span>
+                <button className="signout-btn" onClick={handleLogout}>
+                  Sign out
+                </button>
+              </div>
+            ) : (
+              <button
+                className="btn btn-outline btn-sm"
+                onClick={() => setCurrentPage("login")}
+              >
+                Sign In / Register
+              </button>
+            )}
+          </div>
+        </div>
+      </header>
 
       <main className="container">
         {currentPage === "login" && (
@@ -596,14 +597,28 @@ function App() {
         )}
 
         {currentPage === "admin" && (
-          <AdminPage
-            sessions={sessions}
-            trainers={trainers}
-            allBookings={allBookings}
-            onCreateSession={handleCreateSession}
-            onAddTrainer={handleAddTrainer}
-            onMarkAttendance={handleMarkAttendance}
-          />
+          currentUser && currentUser.role === "admin" ? (
+            <AdminPage
+              sessions={sessions}
+              trainers={trainers}
+              allBookings={allBookings}
+              onCreateSession={handleCreateSession}
+              onAddTrainer={handleAddTrainer}
+              onMarkAttendance={handleMarkAttendance}
+            />
+          ) : (
+            <div className="card" style={{ maxWidth: "560px", margin: "40px auto", textAlign: "center", padding: "36px 20px" }}>
+              <div className="page-tag">[ RESTRICTED ACCESS ]</div>
+              <h2 style={{ margin: "12px 0" }}>Owner Access Only</h2>
+              <p style={{ color: "var(--text-muted)", fontSize: "13px", marginBottom: "20px", lineHeight: "1.6" }}>
+                The Administrative Dashboard is strictly reserved for the gym owner (Raj Yadav).
+                Members enrolled for gym sessions cannot view or modify facility schedules, attendance, or trainer shifts.
+              </p>
+              <button className="btn btn-primary" onClick={() => setCurrentPage("sessions")}>
+                Return to Sessions
+              </button>
+            </div>
+          )
         )}
       </main>
 
@@ -618,82 +633,24 @@ function App() {
 
       <div className="toast-container">
         {toasts.map((t) => (
-          <div key={t.id} className={`toast toast-${t.type}`}>
-            <span>{t.type === "success" ? "✓" : "⚠"}</span>
-            <span>{t.message}</span>
+          <div key={t.id} className="toast">
+            {t.message}
           </div>
         ))}
       </div>
 
-      <Footer />
-    </div>
-  );
-}
-
-function Navigation({ currentUser, currentPage, setCurrentPage, onLogout, myBookingsCount }) {
-  const initials = currentUser
-    ? currentUser.name
-        .split(" ")
-        .map((p) => p[0])
-        .slice(0, 2)
-        .join("")
-        .toUpperCase()
-    : "";
-
-  return (
-    <header className="topbar">
-      <div className="topbar-inner">
-        <div className="brand-section">
-          <div className="logo" onClick={() => setCurrentPage("sessions")}>
-            <span className="brand-title">PULSE ATHLETICS</span>
-            <span className="brand-subtitle">Shalimar Bagh &middot; New Delhi</span>
+      <footer className="site-footer">
+        <div className="footer-inner">
+          <div>
+            <strong>PULSE ATHLETICS</strong> - Shalimar Bagh, New Delhi, India<br />
+            Timings: 10:00 AM TO 10:00 PM (Monday to Sunday) | Phone: +91 98101 23456
           </div>
-
-          <nav className="nav-links">
-            <button
-              className={`nav-link ${currentPage === "sessions" ? "active" : ""}`}
-              onClick={() => setCurrentPage("sessions")}
-            >
-              Classes & Schedule
-            </button>
-            <button
-              className={`nav-link ${currentPage === "my-bookings" ? "active" : ""}`}
-              onClick={() => setCurrentPage("my-bookings")}
-            >
-              My Bookings {myBookingsCount > 0 && `(${myBookingsCount})`}
-            </button>
-            <button
-              className={`nav-link ${currentPage === "admin" ? "active" : ""}`}
-              onClick={() => setCurrentPage("admin")}
-            >
-              Gym Owner & Admin
-            </button>
-          </nav>
+          <div>
+            Owner and Manager: Raj Yadav | Email: admin@gym.com
+          </div>
         </div>
-
-        <div className="topbar-right">
-          {currentUser ? (
-            <div className="user-badge">
-              <span className="avatar-circle">{initials}</span>
-              <div className="user-meta">
-                <span className="user-name">{currentUser.name}</span>
-                <span className="user-role-tag">{currentUser.role === "admin" ? "Owner (Raj Yadav)" : "Member"}</span>
-              </div>
-              <button className="signout-btn" onClick={onLogout}>
-                Sign out
-              </button>
-            </div>
-          ) : (
-            <button
-              className="btn btn-outline btn-sm"
-              onClick={() => setCurrentPage("login")}
-            >
-              Sign In / Register
-            </button>
-          )}
-        </div>
-      </div>
-    </header>
+      </footer>
+    </div>
   );
 }
 
@@ -705,7 +662,7 @@ function LoginPage({ onLogin, onRegister }) {
   const [regName, setRegName] = useState("");
   const [regEmail, setRegEmail] = useState("");
   const [regPhone, setRegPhone] = useState("");
-  const [regGoal, setRegGoal] = useState("Strength & Muscle");
+  const [regGoal, setRegGoal] = useState("Strength Training");
   const [regPassword, setRegPassword] = useState("");
   const [regError, setRegError] = useState("");
 
@@ -734,7 +691,7 @@ function LoginPage({ onLogin, onRegister }) {
 
     const cleanPhone = regPhone.replace(/[^\d]/g, "");
     if (cleanPhone.length < 10) {
-      setRegError("Please enter a valid 10-digit Indian phone number.");
+      setRegError("Please enter a 10 digit Indian mobile number.");
       return;
     }
 
@@ -756,24 +713,24 @@ function LoginPage({ onLogin, onRegister }) {
     }
   }
 
-  function fillDemoAccount(email, password) {
+  function fillDemo(email, pass) {
     setLoginEmail(email);
-    setLoginPassword(password);
+    setLoginPassword(pass);
     setLoginError("");
   }
 
   return (
     <div>
-      <div className="page-tag">PULSE ATHLETICS MEMBER ACCESS</div>
-      <h1>Member &amp; Staff Portal</h1>
+      <div className="page-tag">MEMBER ACCESS</div>
+      <h1>Sign In or Create Account</h1>
       <p className="subtitle">
-        Sign in to your member account, or register with your real details to book classes at Shalimar Bagh.
+        Enter your details to manage gym bookings at Pulse Athletics, Shalimar Bagh.
       </p>
 
       <div className="two-col">
         <div className="card">
-          <h2>Member Sign In</h2>
-          <p className="card-desc">Enter your registered email and password.</p>
+          <h2>Existing Member Sign In</h2>
+          <p className="card-desc">Login with your registered email and password.</p>
 
           <form onSubmit={handleLoginSubmit}>
             <div className="form-group">
@@ -785,7 +742,7 @@ function LoginPage({ onLogin, onRegister }) {
                   setLoginEmail(e.target.value);
                   setLoginError("");
                 }}
-                placeholder="e.g. krish.chhabra@gmail.com"
+                placeholder="name@example.com"
                 required
               />
             </div>
@@ -799,49 +756,40 @@ function LoginPage({ onLogin, onRegister }) {
                   setLoginPassword(e.target.value);
                   setLoginError("");
                 }}
-                placeholder="••••••••••••"
+                placeholder="Enter password"
                 required
               />
             </div>
 
-            {loginError && <div className="field-error" style={{ marginBottom: "12px" }}>{loginError}</div>}
+            {loginError && <div className="field-error">{loginError}</div>}
 
             <button type="submit" className="btn btn-primary btn-wide">
               Sign In
             </button>
           </form>
 
-          <div className="demo-switchers">
-            <div className="demo-switchers-title">Test Accounts:</div>
+          <div style={{ marginTop: "14px", fontSize: "12px" }}>
+            <strong>Quick Test Accounts:</strong>
             <div className="demo-buttons-group">
-              <button
-                type="button"
-                className="demo-btn"
-                onClick={() => fillDemoAccount("admin@gym.com", "password123")}
-              >
-                Raj Yadav (Gym Owner)
+              <button type="button" className="demo-btn" onClick={() => fillDemo("admin@gym.com", "password123")}>
+                Raj Yadav (Owner)
               </button>
-              <button
-                type="button"
-                className="demo-btn"
-                onClick={() => fillDemoAccount("krish.chhabra@gmail.com", "password123")}
-              >
+              <button type="button" className="demo-btn" onClick={() => fillDemo("krish.chhabra@gmail.com", "password123")}>
                 Krish Chhabra (Member)
               </button>
-              <button
-                type="button"
-                className="demo-btn"
-                onClick={() => fillDemoAccount("priya.t@gmail.com", "password123")}
-              >
+              <button type="button" className="demo-btn" onClick={() => fillDemo("priya.t@gmail.com", "password123")}>
                 Priya Tiwari (Member)
               </button>
+            </div>
+            <div style={{ marginTop: "8px", fontSize: "11px", color: "var(--text-muted)" }}>
+              * Enrolling/signing in as a Member keeps Admin controls hidden. Only Owner login reveals the Admin bar.
             </div>
           </div>
         </div>
 
         <div className="card">
-          <h2>Create Your Account</h2>
-          <p className="card-desc">Your real name and phone will be linked to your bookings.</p>
+          <h2>Create New Account</h2>
+          <p className="card-desc">Your real name and phone number will be saved to your profile.</p>
 
           <form onSubmit={handleRegisterSubmit}>
             <div className="form-group">
@@ -853,7 +801,7 @@ function LoginPage({ onLogin, onRegister }) {
                   setRegName(e.target.value);
                   setRegError("");
                 }}
-                placeholder="e.g. Arjun Sharma"
+                placeholder="Enter your full name"
                 required
               />
             </div>
@@ -867,13 +815,13 @@ function LoginPage({ onLogin, onRegister }) {
                   setRegEmail(e.target.value);
                   setRegError("");
                 }}
-                placeholder="e.g. arjun.sharma@gmail.com"
+                placeholder="Enter your email"
                 required
               />
             </div>
 
             <div className="form-group">
-              <label>Mobile Number (10 digits)</label>
+              <label>Mobile Number (10 Digits)</label>
               <div className="input-with-prefix">
                 <span className="input-prefix">+91</span>
                 <input
@@ -885,26 +833,26 @@ function LoginPage({ onLogin, onRegister }) {
                     setRegPhone(digits);
                     setRegError("");
                   }}
-                  placeholder="98765 43210"
+                  placeholder="9876543210"
                   required
                 />
               </div>
-              <div className="field-help">10-digit Indian phone number for booking updates.</div>
+              <div className="field-help">10 digit Indian number without country code</div>
             </div>
 
             <div className="form-group">
-              <label>Primary Fitness Goal</label>
+              <label>Fitness Goal</label>
               <select value={regGoal} onChange={(e) => setRegGoal(e.target.value)}>
-                <option value="Strength & Powerlifting">Strength & Powerlifting</option>
-                <option value="HIIT & Combat Conditioning">HIIT & Combat Conditioning</option>
-                <option value="Yoga & Mobility Rehab">Yoga & Mobility Rehab</option>
-                <option value="Indoor Cycling & Stamina">Indoor Cycling & Stamina</option>
-                <option value="Fat Loss & Overall Fitness">Fat Loss & Overall Fitness</option>
+                <option value="Strength Training">Strength Training</option>
+                <option value="HIIT and Boxing">HIIT and Boxing</option>
+                <option value="Yoga and Mobility">Yoga and Mobility</option>
+                <option value="Indoor Cycling">Indoor Cycling</option>
+                <option value="General Health">General Health</option>
               </select>
             </div>
 
             <div className="form-group">
-              <label>Create Password</label>
+              <label>Password</label>
               <input
                 type="password"
                 value={regPassword}
@@ -912,15 +860,15 @@ function LoginPage({ onLogin, onRegister }) {
                   setRegPassword(e.target.value);
                   setRegError("");
                 }}
-                placeholder="Minimum 6 characters"
+                placeholder="At least 6 characters"
                 required
               />
             </div>
 
-            {regError && <div className="field-error" style={{ marginBottom: "12px" }}>{regError}</div>}
+            {regError && <div className="field-error">{regError}</div>}
 
             <button type="submit" className="btn btn-primary btn-wide">
-              Register &amp; Start Booking
+              Create Account
             </button>
           </form>
         </div>
@@ -950,33 +898,28 @@ function SessionsPage({ sessions, userBookings, onBookSlot, onGoToMyBookings }) 
 
   return (
     <div>
-      <div className="timing-hero-card">
-        <div className="timing-hero-left">
-          <div className="timing-icon-circle">⏰</div>
-          <div>
-            <div className="timing-hero-title">Gym Timings: 10:00 AM TO 10:00 PM</div>
-            <div className="timing-hero-sub">
-              PULSE ATHLETICS &middot; Shalimar Bagh, New Delhi &middot; All sessions supervised by certified trainers
-            </div>
-          </div>
+      <div className="banner-box">
+        <div>
+          <strong>GYM TIMINGS: 10:00 AM TO 10:00 PM</strong> | Location: Shalimar Bagh, New Delhi
         </div>
-        <span className="timing-hours-badge">OPEN 10 AM - 10 PM</span>
+        <div>
+          Owner: Raj Yadav
+        </div>
       </div>
 
-      <div className="page-tag">TRAINING SCHEDULE</div>
-      <h1>Reserve Workout Slots</h1>
+      <div className="page-tag">TRAINING SESSIONS</div>
+      <h1>Book Workout Slots</h1>
       <p className="subtitle">
-        Select a class, confirm your attendee details, and get your booking pass.
+        Browse sessions taking place between 10 AM to 10 PM and book your slot.
       </p>
 
       {userBookings.length > 0 && (
-        <div className="alert-banner">
-          <div className="alert-message">
-            <span>✓</span>
-            <span>You have {userBookings.length} confirmed upcoming {userBookings.length === 1 ? "booking" : "bookings"}.</span>
+        <div className="banner-box" style={{ background: "#f5f5f5" }}>
+          <div>
+            You have {userBookings.length} active class {userBookings.length === 1 ? "booking" : "bookings"}.
           </div>
-          <button className="alert-link" onClick={onGoToMyBookings}>
-            View my schedule →
+          <button className="btn btn-outline btn-sm" onClick={onGoToMyBookings}>
+            View My Bookings
           </button>
         </div>
       )}
@@ -984,33 +927,33 @@ function SessionsPage({ sessions, userBookings, onBookSlot, onGoToMyBookings }) 
       <div className="filters-bar">
         <div className="filter-pills">
           <button
-            className={`filter-pill ${activeFilter === "all" ? "active" : ""}`}
+            className={"filter-pill " + (activeFilter === "all" ? "active" : "")}
             onClick={() => setActiveFilter("all")}
           >
             All Sessions
           </button>
           <button
-            className={`filter-pill ${activeFilter === "today" ? "active" : ""}`}
+            className={"filter-pill " + (activeFilter === "today" ? "active" : "")}
             onClick={() => setActiveFilter("today")}
           >
-            Today (Sat, 17 Oct)
+            Today (17 Oct)
           </button>
           <button
-            className={`filter-pill ${activeFilter === "available" ? "active" : ""}`}
+            className={"filter-pill " + (activeFilter === "available" ? "active" : "")}
             onClick={() => setActiveFilter("available")}
           >
-            Available Slots Only
+            Open Slots Only
           </button>
         </div>
 
-        <div className="filter-type">
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px" }}>
           <label htmlFor="sessionType" style={{ margin: 0 }}>Category:</label>
           <select
             id="sessionType"
             value={selectedType}
             onChange={(e) => setSelectedType(e.target.value)}
           >
-            <option value="all">All Categories</option>
+            <option value="all">All</option>
             <option value="Strength">Strength</option>
             <option value="HIIT">HIIT</option>
             <option value="Yoga">Yoga</option>
@@ -1023,10 +966,10 @@ function SessionsPage({ sessions, userBookings, onBookSlot, onGoToMyBookings }) 
         <table>
           <thead>
             <tr>
-              <th>Date &amp; Time</th>
-              <th>Session &amp; Coach</th>
-              <th>Studio Location</th>
-              <th>Availability</th>
+              <th>Date and Time</th>
+              <th>Session and Trainer</th>
+              <th>Studio</th>
+              <th>Slots Left</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -1045,25 +988,20 @@ function SessionsPage({ sessions, userBookings, onBookSlot, onGoToMyBookings }) 
 
                   <td>
                     <div className="cell-primary">{s.title}</div>
-                    <div className="cell-sub">Coach {s.coach} &middot; {s.category}</div>
+                    <div className="cell-sub">Trainer: {s.coach} ({s.category})</div>
                   </td>
 
-                  <td>
-                    <span className="badge badge-outline">{s.location}</span>
-                  </td>
+                  <td>{s.location}</td>
 
                   <td>
-                    <div className="cell-primary">
-                      {availableSeats} / {s.capacity} spots left
-                    </div>
-                    <div className="cell-sub">{s.bookedCount} registered</div>
+                    {availableSeats} of {s.capacity} left
                   </td>
 
                   <td>
                     {isBooked ? (
-                      <span className="badge badge-green">✓ Reserved</span>
+                      <span className="badge badge-dark">Booked</span>
                     ) : isFull ? (
-                      <button className="btn btn-disabled" disabled>
+                      <button className="btn btn-disabled btn-sm" disabled>
                         Full
                       </button>
                     ) : (
@@ -1082,8 +1020,8 @@ function SessionsPage({ sessions, userBookings, onBookSlot, onGoToMyBookings }) 
         </table>
 
         <div className="table-footer">
-          <span>{filteredSessions.length} sessions listed &middot; All times are IST (10 AM - 10 PM)</span>
-          <span>Location: Shalimar Bagh Facility</span>
+          <span>{filteredSessions.length} sessions listed</span>
+          <span>Timings: 10:00 AM to 10:00 PM</span>
         </div>
       </div>
     </div>
@@ -1108,7 +1046,7 @@ function BookingModal({ session, currentUser, onClose, onConfirm }) {
     e.preventDefault();
 
     if (!name.trim()) {
-      setFormError("Please enter your full name.");
+      setFormError("Please enter your name.");
       return;
     }
     if (!email.trim() || !/^\S+@\S+\.\S+$/.test(email)) {
@@ -1117,7 +1055,7 @@ function BookingModal({ session, currentUser, onClose, onConfirm }) {
     }
     const cleanPhone = phone.replace(/[^\d]/g, "");
     if (cleanPhone.length < 10) {
-      setFormError("Please enter a valid 10-digit Indian mobile number.");
+      setFormError("Please enter a 10 digit Indian mobile number.");
       return;
     }
 
@@ -1128,24 +1066,20 @@ function BookingModal({ session, currentUser, onClose, onConfirm }) {
     <div className="modal-backdrop" onClick={onClose}>
       <div className="modal-box" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <div className="modal-title">Confirm Slot Reservation</div>
-          <button className="modal-close-btn" onClick={onClose}>×</button>
+          <div className="modal-title">Book Session Slot</div>
+          <button className="modal-close-btn" onClick={onClose}>Close</button>
         </div>
 
         <div className="modal-body">
-          <div className="modal-session-pill">
-            <div className="modal-session-title">{session.title}</div>
-            <div className="modal-session-details">
-              {session.displayDate} &middot; {session.startTime} - {session.endTime} &middot; {session.location} with Coach {session.coach}
-            </div>
-            <div style={{ fontSize: "11px", color: "var(--primary)", marginTop: "4px", fontWeight: 700 }}>
-              {availableSeats} slots remaining &middot; Facility: Shalimar Bagh
-            </div>
+          <div style={{ background: "#f5f5f5", padding: "10px", marginBottom: "14px", border: "1px solid #ccc", fontSize: "13px" }}>
+            <strong>{session.title}</strong><br />
+            {session.displayDate} | {session.startTime} - {session.endTime} | Trainer: {session.coach}<br />
+            {availableSeats} slots available
           </div>
 
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label>Attendee Full Name</label>
+              <label>Your Name</label>
               <input
                 type="text"
                 value={name}
@@ -1153,7 +1087,7 @@ function BookingModal({ session, currentUser, onClose, onConfirm }) {
                   setName(e.target.value);
                   setFormError("");
                 }}
-                placeholder="e.g. Krish Chhabra"
+                placeholder="Enter full name"
                 required
               />
             </div>
@@ -1167,13 +1101,13 @@ function BookingModal({ session, currentUser, onClose, onConfirm }) {
                   setEmail(e.target.value);
                   setFormError("");
                 }}
-                placeholder="e.g. krish.chhabra@gmail.com"
+                placeholder="name@example.com"
                 required
               />
             </div>
 
             <div className="form-group">
-              <label>Mobile Number (10 digits)</label>
+              <label>Mobile Number (10 Digits)</label>
               <div className="input-with-prefix">
                 <span className="input-prefix">+91</span>
                 <input
@@ -1185,31 +1119,30 @@ function BookingModal({ session, currentUser, onClose, onConfirm }) {
                     setPhone(digits);
                     setFormError("");
                   }}
-                  placeholder="98112 34567"
+                  placeholder="9876543210"
                   required
                 />
               </div>
             </div>
 
             <div className="form-group">
-              <label>Workout / Health Notes (Optional)</label>
+              <label>Notes (Optional)</label>
               <input
                 type="text"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                placeholder="e.g. Beginner, prior lower back stiffness, wrist strap request"
+                placeholder="e.g. Beginner, back issue, mat request"
               />
-              <div className="field-help">Shared with Coach {session.coach} before session starts.</div>
             </div>
 
-            {formError && <div className="field-error" style={{ marginBottom: "12px" }}>{formError}</div>}
+            {formError && <div className="field-error">{formError}</div>}
 
-            <div style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
+            <div style={{ display: "flex", gap: "8px", marginTop: "16px" }}>
               <button type="button" className="btn btn-outline" style={{ flex: 1 }} onClick={onClose}>
                 Cancel
               </button>
               <button type="submit" className="btn btn-primary" style={{ flex: 2 }}>
-                Confirm Reservation
+                Confirm Booking
               </button>
             </div>
           </form>
@@ -1222,11 +1155,11 @@ function BookingModal({ session, currentUser, onClose, onConfirm }) {
 function MyBookingsPage({ currentUser, userBookings, pastSessions, onCancelBooking, onBrowseSessions, onGoToLogin }) {
   if (!currentUser) {
     return (
-      <div className="card" style={{ textAlign: "center", padding: "48px 24px" }}>
-        <h2>Sign In to View Your Schedule</h2>
-        <p className="card-desc">Log in or create an account with your real details to manage booked classes.</p>
+      <div className="card" style={{ textAlign: "center", padding: "40px 20px" }}>
+        <h2>Sign In Required</h2>
+        <p className="card-desc">Please sign in or create an account to view your bookings.</p>
         <button className="btn btn-primary" onClick={onGoToLogin}>
-          Sign in / Register
+          Sign In
         </button>
       </div>
     );
@@ -1234,30 +1167,25 @@ function MyBookingsPage({ currentUser, userBookings, pastSessions, onCancelBooki
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "12px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "10px", marginBottom: "16px" }}>
         <div>
-          <h1>My Reserved Sessions</h1>
+          <h1>My Bookings</h1>
           <p className="subtitle">
-            Attendee: <strong>{currentUser.name}</strong> ({currentUser.email}) &middot; Phone: {currentUser.phone}
+            Member: <strong>{currentUser.name}</strong> ({currentUser.email}) | Phone: {currentUser.phone}
           </p>
         </div>
         <button className="btn btn-outline" onClick={onBrowseSessions}>
-          Browse More Classes
+          Browse Sessions
         </button>
       </div>
 
-      <div className="section-header">
-        <div className="section-title">
-          <span>Upcoming Sessions</span>
-          <span className="badge badge-teal">{userBookings.length} confirmed</span>
-        </div>
-      </div>
+      <h2>Upcoming Sessions ({userBookings.length})</h2>
 
       {userBookings.length === 0 ? (
-        <div className="card" style={{ textAlign: "center", padding: "36px" }}>
-          <p className="card-desc">You do not have any active class reservations right now.</p>
+        <div className="card" style={{ textAlign: "center", padding: "30px" }}>
+          <p className="card-desc">You do not have any upcoming bookings.</p>
           <button className="btn btn-primary" onClick={onBrowseSessions}>
-            Book a Class
+            Book a Session
           </button>
         </div>
       ) : (
@@ -1269,48 +1197,42 @@ function MyBookingsPage({ currentUser, userBookings, pastSessions, onCancelBooki
                 <span className="date-box-day">{b.day}</span>
               </div>
 
-              <div className="booking-details">
+              <div>
                 <h3>{b.title}</h3>
-                <div className="booking-time">
-                  {b.fullDate} &middot; {b.startTime} - {b.endTime}
+                <div style={{ fontSize: "13px" }}>
+                  {b.fullDate} | {b.startTime} - {b.endTime}
                 </div>
-                <div className="booking-location">
-                  {b.location} &middot; Coach {b.coach} &middot; Pass Ref: <strong>{b.bookingCode}</strong>
+                <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>
+                  {b.location} | Trainer: {b.coach} | Ref: {b.bookingCode}
                 </div>
                 {b.notes && (
-                  <div style={{ fontSize: "11px", color: "var(--text-muted)", marginTop: "3px" }}>
+                  <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>
                     Notes: {b.notes}
                   </div>
                 )}
               </div>
             </div>
 
-            <div className="booking-right">
-              {b.isToday && <span className="badge badge-teal">Today</span>}
-              <span className="badge badge-green">Confirmed</span>
+            <div>
+              <span className="badge badge-dark" style={{ marginRight: "8px" }}>Confirmed</span>
               <button
                 className="btn btn-outline btn-sm"
                 onClick={() => onCancelBooking(b.id, b.sessionId)}
               >
-                Cancel Slot
+                Cancel Booking
               </button>
             </div>
           </div>
         ))
       )}
 
-      <div className="section-header">
-        <div className="section-title">
-          <span>Past Sessions</span>
-        </div>
-      </div>
-
+      <h2 style={{ marginTop: "24px" }}>Past Sessions</h2>
       <div className="table-container">
         <table>
           <thead>
             <tr>
-              <th>Date &amp; Time</th>
-              <th>Class</th>
+              <th>Date and Time</th>
+              <th>Session</th>
               <th>Status</th>
               <th>Attendance</th>
             </tr>
@@ -1320,9 +1242,7 @@ function MyBookingsPage({ currentUser, userBookings, pastSessions, onCancelBooki
               <tr key={p.id}>
                 <td>{p.date}</td>
                 <td className="cell-primary">{p.title}</td>
-                <td>
-                  <span className="badge badge-outline">{p.status}</span>
-                </td>
+                <td>{p.status}</td>
                 <td>{p.attendance}</td>
               </tr>
             ))}
@@ -1342,18 +1262,17 @@ function AdminPage({ sessions, trainers, allBookings, onCreateSession, onAddTrai
   const [sessionStart, setSessionStart] = useState("11:00 AM");
   const [sessionEnd, setSessionEnd] = useState("12:00 PM");
   const [sessionCoach, setSessionCoach] = useState(trainers[0] ? trainers[0].name : "Arjun Sharma");
-  const [sessionLocation, setSessionLocation] = useState("Studio A (Weights)");
+  const [sessionLocation, setSessionLocation] = useState("Studio A");
   const [sessionCapacity, setSessionCapacity] = useState(12);
   const [sessionCategory, setSessionCategory] = useState("Strength");
 
   const [trainerName, setTrainerName] = useState("");
-  const [trainerRole, setTrainerRole] = useState("Fitness Trainer");
+  const [trainerRole, setTrainerRole] = useState("Trainer");
   const [trainerEmail, setTrainerEmail] = useState("");
   const [trainerPhone, setTrainerPhone] = useState("");
   const [trainerSpecialty, setTrainerSpecialty] = useState("");
   const [trainerShift, setTrainerShift] = useState("10:00 AM - 04:00 PM");
   const [trainerWeeklyHours, setTrainerWeeklyHours] = useState(36);
-  const [trainerBio, setTrainerBio] = useState("");
 
   const currentSession = sessions.find((s) => String(s.id) === String(selectedSessionId)) || sessions[0];
   const sessionAttendees = currentSession
@@ -1393,166 +1312,96 @@ function AdminPage({ sessions, trainers, allBookings, onCreateSession, onAddTrai
       phone: trainerPhone,
       specialty: trainerSpecialty,
       shift: trainerShift,
-      weeklyHours: trainerWeeklyHours,
-      bio: trainerBio
+      weeklyHours: trainerWeeklyHours
     });
 
     setTrainerName("");
     setTrainerEmail("");
     setTrainerPhone("");
     setTrainerSpecialty("");
-    setTrainerBio("");
   }
 
   return (
     <div>
-      <div className="page-tag">GYM OWNER &amp; HEAD ADMINISTRATION</div>
-      <h1>Club Operations &amp; Staff Reports</h1>
+      <div className="page-tag">ADMIN &amp; OWNER WORKSPACE</div>
+      <h1>Gym Management (Raj Yadav)</h1>
       <p className="subtitle">
-        Managed by <strong>Raj Yadav</strong> (Owner) &middot; PULSE ATHLETICS, Shalimar Bagh, New Delhi.
+        Facility owner Raj Yadav manages attendances, class schedule, and trainer reports.
       </p>
 
       <div className="admin-nav-tabs">
         <button
-          className={`admin-tab ${adminTab === "overview" ? "active" : ""}`}
+          className={"admin-tab " + (adminTab === "overview" ? "active" : "")}
           onClick={() => setAdminTab("overview")}
         >
-          Raj Yadav (Owner Dashboard)
+          Gym Owner Profile
         </button>
         <button
-          className={`admin-tab ${adminTab === "trainers" ? "active" : ""}`}
+          className={"admin-tab " + (adminTab === "trainers" ? "active" : "")}
           onClick={() => setAdminTab("trainers")}
         >
-          Trainer Shift &amp; Hours Report ({trainers.length})
+          Trainer Shift Reports ({trainers.length})
         </button>
         <button
-          className={`admin-tab ${adminTab === "attendance" ? "active" : ""}`}
+          className={"admin-tab " + (adminTab === "attendance" ? "active" : "")}
           onClick={() => setAdminTab("attendance")}
         >
-          Session Attendance &amp; Check-ins
+          Member Attendance
         </button>
         <button
-          className={`admin-tab ${adminTab === "bookings" ? "active" : ""}`}
+          className={"admin-tab " + (adminTab === "bookings" ? "active" : "")}
           onClick={() => setAdminTab("bookings")}
         >
-          Master Bookings Register ({allBookings.length})
+          All Bookings ({allBookings.length})
         </button>
         <button
-          className={`admin-tab ${adminTab === "create-session" ? "active" : ""}`}
+          className={"admin-tab " + (adminTab === "create-session" ? "active" : "")}
           onClick={() => setAdminTab("create-session")}
         >
-          Schedule Class
+          Add Session
         </button>
       </div>
 
       {adminTab === "overview" && (
         <div>
-          <div className="owner-profile-card">
-            <div className="owner-avatar">RY</div>
-            <div className="owner-details">
-              <div className="owner-header-row">
-                <div>
-                  <div className="owner-name">Raj Yadav</div>
-                  <div className="owner-title">Sole Owner &amp; Athletic Director &middot; Pulse Athletics</div>
-                </div>
-                <span className="badge badge-teal">Gym Owner &amp; Administrator</span>
-              </div>
-              <p style={{ fontSize: "13px", color: "var(--text-muted)" }}>
-                Raj Yadav oversees all daily operations at Pulse Athletics, Shalimar Bagh. He manages gym timings
-                (10:00 AM - 10:00 PM), assigns daily shifts and class rosters to certified trainers, tracks member
-                attendances, and maintains high training standards.
-              </p>
+          <div className="card">
+            <h2>Gym Owner: Raj Yadav</h2>
+            <p className="card-desc">
+              Raj Yadav is the sole owner and director of Pulse Athletics, Shalimar Bagh, New Delhi.
+              He supervises all daily operations, trainer hours, and member attendances.
+            </p>
 
-              <div className="owner-specs-grid">
-                <div className="owner-spec-item">
-                  <span className="owner-spec-label">Direct Contact (Raj Yadav)</span>
-                  <span className="owner-spec-val">+91 98101 23456</span>
-                </div>
-                <div className="owner-spec-item">
-                  <span className="owner-spec-label">Email</span>
-                  <span className="owner-spec-val">admin@gym.com</span>
-                </div>
-                <div className="owner-spec-item">
-                  <span className="owner-spec-label">Facility Address</span>
-                  <span className="owner-spec-val">PULSE ATHLETICS, Shalimar Bagh, New Delhi, India</span>
-                </div>
-                <div className="owner-spec-item">
-                  <span className="owner-spec-label">Gym Timings</span>
-                  <span className="owner-spec-val">10:00 AM TO 10:00 PM (Daily)</span>
-                </div>
-                <div className="owner-spec-item">
-                  <span className="owner-spec-label">Coaches Reporting</span>
-                  <span className="owner-spec-val">{trainers.length} Certified Instructors</span>
-                </div>
-                <div className="owner-spec-item">
-                  <span className="owner-spec-label">Facility Setup</span>
-                  <span className="owner-spec-val">Studio A (Weights), Studio B (HIIT), Cycle Arena</span>
-                </div>
-              </div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", fontSize: "13px", marginTop: "10px" }}>
+              <div><strong>Owner Name:</strong> Raj Yadav</div>
+              <div><strong>Contact Number:</strong> +91 98101 23456</div>
+              <div><strong>Email:</strong> admin@gym.com</div>
+              <div><strong>Gym Address:</strong> PULSE ATHLETICS, Shalimar Bagh, New Delhi, India</div>
+              <div><strong>Gym Timings:</strong> 10:00 AM TO 10:00 PM (Daily)</div>
+              <div><strong>Total Active Trainers:</strong> {trainers.length} Trainers</div>
             </div>
           </div>
 
           <div className="four-col">
             <div className="stat-card">
               <div className="stat-label">Gym Timings</div>
-              <div className="stat-val" style={{ fontSize: "18px" }}>10 AM - 10 PM</div>
-              <div className="stat-sub">Shalimar Bagh, New Delhi</div>
+              <div className="stat-val">10 AM - 10 PM</div>
+              <div className="stat-sub">Shalimar Bagh</div>
             </div>
             <div className="stat-card">
-              <div className="stat-label">Trainers on Staff</div>
+              <div className="stat-label">Trainers</div>
               <div className="stat-val">{trainers.length}</div>
               <div className="stat-sub">Reporting to Raj Yadav</div>
             </div>
             <div className="stat-card">
               <div className="stat-label">Classes Scheduled</div>
               <div className="stat-val">{sessions.length}</div>
-              <div className="stat-sub">Active studio sessions</div>
+              <div className="stat-sub">10 AM to 10 PM</div>
             </div>
             <div className="stat-card">
-              <div className="stat-label">Confirmed Bookings</div>
-              <div className="stat-val">{allBookings.filter((b) => b.status === "Confirmed").length}</div>
-              <div className="stat-sub">Active member reservations</div>
+              <div className="stat-label">Total Bookings</div>
+              <div className="stat-val">{allBookings.length}</div>
+              <div className="stat-sub">Active and past</div>
             </div>
-          </div>
-
-          <div className="section-header">
-            <div className="section-title">
-              <span>Trainer Work Hours &amp; Shift Summary (Report to Raj Yadav)</span>
-            </div>
-            <button className="btn btn-outline btn-sm" onClick={() => setAdminTab("trainers")}>
-              Manage Shift Roster →
-            </button>
-          </div>
-
-          <div className="four-col">
-            {trainers.map((t) => (
-              <div className="trainer-card" key={t.id}>
-                <div>
-                  <div className="trainer-header">
-                    <div className="trainer-avatar">
-                      {t.name.split(" ").map((n) => n[0]).join("")}
-                    </div>
-                    <div className="trainer-info">
-                      <h4>{t.name}</h4>
-                      <div className="trainer-specialty">{t.role}</div>
-                    </div>
-                  </div>
-                  <div className="trainer-report-badge">
-                    <div className="trainer-report-grid">
-                      <div>Shift: {t.shift}</div>
-                      <div>Weekly: {t.weeklyHours} hrs</div>
-                      <div>Sessions: {t.sessionsTakenWeek} taken</div>
-                      <div>Rating: {t.rating}</div>
-                    </div>
-                  </div>
-                  <div className="trainer-body">{t.bio}</div>
-                </div>
-                <div className="trainer-meta-row">
-                  <span>{t.phone}</span>
-                  <span className="badge badge-teal">Active on Floor</span>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       )}
@@ -1561,12 +1410,12 @@ function AdminPage({ sessions, trainers, allBookings, onCreateSession, onAddTrai
         <div className="admin-grid">
           <div>
             <div className="card">
-              <h2>Register New Trainer</h2>
-              <p className="card-desc">Add a certified coach to report to Raj Yadav at Shalimar Bagh.</p>
+              <h2>Add Trainer</h2>
+              <p className="card-desc">Add a trainer working under Raj Yadav.</p>
 
               <form onSubmit={handleAddTrainerSubmit}>
                 <div className="form-group">
-                  <label>Coach Full Name</label>
+                  <label>Trainer Name</label>
                   <input
                     type="text"
                     value={trainerName}
@@ -1577,30 +1426,30 @@ function AdminPage({ sessions, trainers, allBookings, onCreateSession, onAddTrai
                 </div>
 
                 <div className="form-group">
-                  <label>Role / Designation</label>
+                  <label>Role</label>
                   <input
                     type="text"
                     value={trainerRole}
                     onChange={(e) => setTrainerRole(e.target.value)}
-                    placeholder="e.g. Strength &amp; Conditioning Coach"
+                    placeholder="e.g. Fitness Coach"
                     required
                   />
                 </div>
 
                 <div className="form-row">
                   <div className="form-group">
-                    <label>Email Address</label>
+                    <label>Email</label>
                     <input
                       type="email"
                       value={trainerEmail}
                       onChange={(e) => setTrainerEmail(e.target.value)}
-                      placeholder="vikram@pulseathletics.in"
+                      placeholder="email@pulseathletics.in"
                       required
                     />
                   </div>
 
                   <div className="form-group">
-                    <label>Mobile Number (10 digits)</label>
+                    <label>Mobile (10 Digits)</label>
                     <div className="input-with-prefix">
                       <span className="input-prefix">+91</span>
                       <input
@@ -1608,7 +1457,7 @@ function AdminPage({ sessions, trainers, allBookings, onCreateSession, onAddTrai
                         maxLength="10"
                         value={trainerPhone}
                         onChange={(e) => setTrainerPhone(e.target.value.replace(/[^\d]/g, ""))}
-                        placeholder="98100 11223"
+                        placeholder="9876543210"
                         required
                       />
                     </div>
@@ -1617,12 +1466,12 @@ function AdminPage({ sessions, trainers, allBookings, onCreateSession, onAddTrai
 
                 <div className="form-row">
                   <div className="form-group">
-                    <label>Shift Timing (Between 10 AM - 10 PM)</label>
+                    <label>Shift Timing (10 AM - 10 PM)</label>
                     <select value={trainerShift} onChange={(e) => setTrainerShift(e.target.value)}>
-                      <option value="10:00 AM - 04:00 PM">Morning: 10:00 AM - 04:00 PM</option>
-                      <option value="04:00 PM - 10:00 PM">Evening: 04:00 PM - 10:00 PM</option>
-                      <option value="11:00 AM - 07:00 PM">Full Day: 11:00 AM - 07:00 PM</option>
-                      <option value="02:00 PM - 09:00 PM">Afternoon: 02:00 PM - 09:00 PM</option>
+                      <option value="10:00 AM - 04:00 PM">10:00 AM - 04:00 PM</option>
+                      <option value="04:00 PM - 10:00 PM">04:00 PM - 10:00 PM</option>
+                      <option value="11:00 AM - 07:00 PM">11:00 AM - 07:00 PM</option>
+                      <option value="02:00 PM - 09:00 PM">02:00 PM - 09:00 PM</option>
                     </select>
                   </div>
 
@@ -1640,109 +1489,74 @@ function AdminPage({ sessions, trainers, allBookings, onCreateSession, onAddTrai
                 </div>
 
                 <div className="form-group">
-                  <label>Specialty Discipline</label>
+                  <label>Specialty</label>
                   <input
                     type="text"
                     value={trainerSpecialty}
                     onChange={(e) => setTrainerSpecialty(e.target.value)}
-                    placeholder="e.g. Olympic Weightlifting &amp; Core Hypertrophy"
+                    placeholder="e.g. Weightlifting"
                     required
                   />
                 </div>
 
-                <div className="form-group">
-                  <label>Coach Bio &amp; Experience</label>
-                  <textarea
-                    rows="2"
-                    value={trainerBio}
-                    onChange={(e) => setTrainerBio(e.target.value)}
-                    placeholder="Background, certifications, client specialties..."
-                  ></textarea>
-                </div>
-
                 <button type="submit" className="btn btn-primary btn-wide">
-                  Register Trainer under Raj Yadav
+                  Save Trainer
                 </button>
               </form>
             </div>
           </div>
 
           <div>
-            <h2>Trainer Work Hours &amp; Performance ({trainers.length})</h2>
-            <p className="card-desc">Reports submitted to Raj Yadav &middot; Pulse Athletics, Shalimar Bagh.</p>
+            <h2>Trainer Reports (Submitted to Raj Yadav)</h2>
+            <p className="card-desc">Working hours and sessions taken by trainers at Shalimar Bagh.</p>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-              {trainers.map((t) => (
-                <div className="card" key={t.id} style={{ marginBottom: 0 }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "8px" }}>
-                    <div style={{ display: "flex", gap: "14px", alignItems: "center" }}>
-                      <div className="trainer-avatar" style={{ width: "48px", height: "48px" }}>
-                        {t.name.split(" ").map((n) => n[0]).join("")}
-                      </div>
-                      <div>
-                        <h3>{t.name}</h3>
-                        <div style={{ fontSize: "12px", color: "var(--primary)", fontWeight: 700 }}>
-                          {t.specialty}
-                        </div>
-                        <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>
-                          {t.email} &middot; {t.phone}
-                        </div>
-                      </div>
-                    </div>
-                    <span className="badge badge-teal">Shift: {t.shift}</span>
-                  </div>
-
-                  <div className="trainer-report-badge" style={{ marginTop: "12px", marginBottom: "8px" }}>
-                    <div className="trainer-report-grid">
-                      <div>Assigned Hours: <strong>{t.weeklyHours} hrs/week</strong></div>
-                      <div>Sessions Taken: <strong>{t.sessionsTakenWeek} classes</strong></div>
-                      <div>Rating: <strong>{t.rating}</strong></div>
-                      <div>Supervised By: <strong>Raj Yadav</strong></div>
+            {trainers.map((t) => (
+              <div className="trainer-card" key={t.id}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                  <div>
+                    <h4>{t.name} ({t.role})</h4>
+                    <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>
+                      {t.email} | {t.phone} | Specialty: {t.specialty}
                     </div>
                   </div>
-
-                  <p style={{ fontSize: "13px", color: "var(--text-muted)", lineHeight: "1.4" }}>
-                    {t.bio}
-                  </p>
+                  <span className="badge">Shift: {t.shift}</span>
                 </div>
-              ))}
-            </div>
+
+                <div className="trainer-report-grid">
+                  <div>Working Hours: <strong>{t.weeklyHours} hours/week</strong></div>
+                  <div>Sessions Taken: <strong>{t.sessionsTakenWeek} classes</strong></div>
+                  <div>Rating: <strong>{t.rating}</strong></div>
+                  <div>Manager: <strong>Raj Yadav</strong></div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       )}
 
       {adminTab === "attendance" && (
         <div className="card">
-          <h2>Session Roster &amp; Member Attendance</h2>
-          <p className="card-desc">Select a class to inspect registered attendees and mark check-in status.</p>
+          <h2>Session Attendance</h2>
+          <p className="card-desc">Select a session to view members and mark attendance.</p>
 
-          <div className="form-group" style={{ maxWidth: "520px" }}>
-            <label>Select Scheduled Class:</label>
+          <div className="form-group" style={{ maxWidth: "400px" }}>
+            <label>Select Session:</label>
             <select
               value={selectedSessionId}
               onChange={(e) => setSelectedSessionId(e.target.value)}
             >
               {sessions.map((s) => (
                 <option key={s.id} value={s.id}>
-                  {s.displayDate} &middot; {s.startTime} - {s.endTime} &middot; {s.title} (Coach {s.coach})
+                  {s.displayDate} · {s.startTime} - {s.endTime} · {s.title} ({s.coach})
                 </option>
               ))}
             </select>
           </div>
 
-          {currentSession && (
-            <div className="admin-summary-bar">
-              <span>{currentSession.location} &middot; Coach {currentSession.coach}</span>
-              <span>
-                {currentSession.bookedCount} / {currentSession.capacity} Booked ({currentSession.capacity - currentSession.bookedCount} slots remaining)
-              </span>
-            </div>
-          )}
-
           <div className="attendance-counters">
-            <span className="attendance-pill green">{presentCount} Present</span>
-            <span className="attendance-pill red">{absentCount} Absent</span>
-            <span className="attendance-pill">{notMarkedCount} Not Marked</span>
+            <span className="attendance-pill">Present: {presentCount}</span>
+            <span className="attendance-pill">Absent: {absentCount}</span>
+            <span className="attendance-pill">Not marked: {notMarkedCount}</span>
           </div>
 
           <div className="table-container">
@@ -1751,65 +1565,48 @@ function AdminPage({ sessions, trainers, allBookings, onCreateSession, onAddTrai
                 <tr>
                   <th>Member Name</th>
                   <th>Contact Details</th>
-                  <th>Pass Ref</th>
-                  <th>Health / Workout Notes</th>
-                  <th>Attendance Status</th>
-                  <th>Mark Status</th>
+                  <th>Booking Ref</th>
+                  <th>Notes</th>
+                  <th>Status</th>
+                  <th>Mark Attendance</th>
                 </tr>
               </thead>
               <tbody>
                 {sessionAttendees.length === 0 ? (
                   <tr>
-                    <td colSpan="6" style={{ textAlign: "center", padding: "28px", color: "var(--text-muted)" }}>
-                      No members currently registered for this session slot.
+                    <td colSpan="6" style={{ textAlign: "center", padding: "20px" }}>
+                      No members registered for this session.
                     </td>
                   </tr>
                 ) : (
                   sessionAttendees.map((m) => (
                     <tr key={m.id}>
+                      <td className="cell-primary">{m.userName}</td>
                       <td>
-                        <div className="cell-primary">{m.userName}</div>
+                        <div>{m.userEmail}</div>
+                        <div style={{ fontSize: "11px", color: "var(--text-muted)" }}>{m.userPhone}</div>
+                      </td>
+                      <td>{m.bookingCode}</td>
+                      <td>{m.notes || "-"}</td>
+                      <td>
+                        <span className="badge">{m.attendance || "Not marked"}</span>
                       </td>
                       <td>
-                        <div className="cell-sub">{m.userEmail}</div>
-                        <div className="cell-sub">{m.userPhone}</div>
-                      </td>
-                      <td>
-                        <span className="badge badge-outline">{m.bookingCode}</span>
-                      </td>
-                      <td style={{ maxWidth: "200px", fontSize: "12px", color: "var(--text-muted)" }}>
-                        {m.notes || "—"}
-                      </td>
-                      <td>
-                        <span
-                          className={`badge ${
-                            m.attendance === "Present"
-                              ? "badge-green"
-                              : m.attendance === "Absent"
-                              ? "badge-red"
-                              : ""
-                          }`}
+                        <button
+                          type="button"
+                          className={"attendance-btn " + (m.attendance === "Present" ? "selected" : "")}
+                          onClick={() => onMarkAttendance(m.id, "Present")}
+                          style={{ marginRight: "4px" }}
                         >
-                          {m.attendance || "Not marked"}
-                        </span>
-                      </td>
-                      <td>
-                        <div className="attendance-btn-group">
-                          <button
-                            type="button"
-                            className={`attendance-btn ${m.attendance === "Present" ? "selected-present" : ""}`}
-                            onClick={() => onMarkAttendance(m.id, "Present")}
-                          >
-                            Present
-                          </button>
-                          <button
-                            type="button"
-                            className={`attendance-btn ${m.attendance === "Absent" ? "selected-absent" : ""}`}
-                            onClick={() => onMarkAttendance(m.id, "Absent")}
-                          >
-                            Absent
-                          </button>
-                        </div>
+                          Present
+                        </button>
+                        <button
+                          type="button"
+                          className={"attendance-btn " + (m.attendance === "Absent" ? "selected" : "")}
+                          onClick={() => onMarkAttendance(m.id, "Absent")}
+                        >
+                          Absent
+                        </button>
                       </td>
                     </tr>
                   ))
@@ -1822,49 +1619,33 @@ function AdminPage({ sessions, trainers, allBookings, onCreateSession, onAddTrai
 
       {adminTab === "bookings" && (
         <div className="card">
-          <h2>Master Member Bookings Register</h2>
-          <p className="card-desc">All reserved classes recorded across members with contact details.</p>
+          <h2>Master Bookings Register</h2>
+          <p className="card-desc">All bookings made across members.</p>
 
           <div className="table-container">
             <table>
               <thead>
                 <tr>
-                  <th>Pass Code</th>
+                  <th>Booking Code</th>
                   <th>Member Name</th>
-                  <th>Email &amp; Mobile</th>
-                  <th>Class &amp; Coach</th>
-                  <th>Date &amp; Time</th>
-                  <th>Workout Notes</th>
+                  <th>Email and Mobile</th>
+                  <th>Session</th>
+                  <th>Time</th>
                   <th>Status</th>
                 </tr>
               </thead>
               <tbody>
                 {allBookings.map((b) => (
                   <tr key={b.id}>
-                    <td>
-                      <span className="badge badge-outline">{b.bookingCode}</span>
-                    </td>
+                    <td>{b.bookingCode}</td>
                     <td className="cell-primary">{b.userName}</td>
                     <td>
-                      <div className="cell-sub">{b.userEmail}</div>
-                      <div className="cell-sub">{b.userPhone}</div>
+                      <div>{b.userEmail}</div>
+                      <div style={{ fontSize: "11px", color: "var(--text-muted)" }}>{b.userPhone}</div>
                     </td>
-                    <td>
-                      <div className="cell-primary">{b.title}</div>
-                      <div className="cell-sub">Coach {b.coach} &middot; {b.location}</div>
-                    </td>
-                    <td>
-                      <div className="cell-primary">{b.fullDate}</div>
-                      <div className="cell-sub">{b.startTime} - {b.endTime}</div>
-                    </td>
-                    <td style={{ maxWidth: "200px", fontSize: "12px", color: "var(--text-muted)" }}>
-                      {b.notes || "None"}
-                    </td>
-                    <td>
-                      <span className={`badge ${b.status === "Confirmed" ? "badge-green" : "badge-red"}`}>
-                        {b.status}
-                      </span>
-                    </td>
+                    <td>{b.title} (Trainer: {b.coach})</td>
+                    <td>{b.fullDate} | {b.startTime} - {b.endTime}</td>
+                    <td>{b.status}</td>
                   </tr>
                 ))}
               </tbody>
@@ -1874,18 +1655,18 @@ function AdminPage({ sessions, trainers, allBookings, onCreateSession, onAddTrai
       )}
 
       {adminTab === "create-session" && (
-        <div className="card" style={{ maxWidth: "600px" }}>
-          <h2>Schedule New Studio Session</h2>
-          <p className="card-desc">Classes must be scheduled between gym timings 10:00 AM to 10:00 PM.</p>
+        <div className="card" style={{ maxWidth: "500px" }}>
+          <h2>Schedule New Session</h2>
+          <p className="card-desc">Class time must be between 10:00 AM to 10:00 PM.</p>
 
           <form onSubmit={handleCreateSessionSubmit}>
             <div className="form-group">
-              <label>Class Name</label>
+              <label>Session Name</label>
               <input
                 type="text"
                 value={sessionTitle}
                 onChange={(e) => setSessionTitle(e.target.value)}
-                placeholder="e.g. Olympic Barbell Strength &amp; Core"
+                placeholder="e.g. Strength Training"
                 required
               />
             </div>
@@ -1923,6 +1704,7 @@ function AdminPage({ sessions, trainers, allBookings, onCreateSession, onAddTrai
                   required
                 />
               </div>
+
               <div className="form-group">
                 <label>End Time</label>
                 <input
@@ -1937,7 +1719,7 @@ function AdminPage({ sessions, trainers, allBookings, onCreateSession, onAddTrai
 
             <div className="form-row">
               <div className="form-group">
-                <label>Coach Assigned</label>
+                <label>Trainer</label>
                 <select value={sessionCoach} onChange={(e) => setSessionCoach(e.target.value)}>
                   {trainers.map((t) => (
                     <option key={t.id} value={t.name}>
@@ -1948,12 +1730,11 @@ function AdminPage({ sessions, trainers, allBookings, onCreateSession, onAddTrai
               </div>
 
               <div className="form-group">
-                <label>Studio Room</label>
+                <label>Studio</label>
                 <select value={sessionLocation} onChange={(e) => setSessionLocation(e.target.value)}>
-                  <option value="Studio A (Weights)">Studio A (Main Weight Floor)</option>
-                  <option value="Studio B (Functional)">Studio B (HIIT &amp; Functional)</option>
-                  <option value="Cycle Arena">Cycle Arena</option>
-                  <option value="Studio A (Recovery)">Studio A (Recovery &amp; Yoga)</option>
+                  <option value="Studio A">Studio A</option>
+                  <option value="Studio B">Studio B</option>
+                  <option value="Cycle Room">Cycle Room</option>
                 </select>
               </div>
             </div>
@@ -1971,7 +1752,7 @@ function AdminPage({ sessions, trainers, allBookings, onCreateSession, onAddTrai
             </div>
 
             <button type="submit" className="btn btn-primary btn-wide">
-              Publish Class to Schedule
+              Add Session to Schedule
             </button>
           </form>
         </div>
@@ -1980,40 +1761,12 @@ function AdminPage({ sessions, trainers, allBookings, onCreateSession, onAddTrai
   );
 }
 
-function Footer() {
-  return (
-    <footer className="site-footer">
-      <div className="footer-inner">
-        <div>
-          <div className="footer-address">PULSE ATHLETICS &middot; Shalimar Bagh, New Delhi, India</div>
-          <div style={{ marginTop: "4px" }}>
-            Timings: <strong>10:00 AM TO 10:00 PM</strong> (Monday to Sunday) &middot; Contact: +91 98101 23456
-          </div>
-        </div>
-        <div>
-          Managed by <strong>Raj Yadav</strong> (Owner &amp; Director) &middot; support@pulseathletics.in
-        </div>
-      </div>
-    </footer>
-  );
-}
-
-function formatDisplayDate(dateStr) {
-  if (!dateStr) return "Sat, 17 Oct";
-  const [y, m, d] = dateStr.split("-");
-  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  const dateObj = new Date(Number(y), Number(m) - 1, Number(d));
-  const dayName = days[dateObj.getDay()] || "Sat";
-  const monthName = months[dateObj.getMonth()] || "Oct";
-  return `${dayName}, ${Number(d)} ${monthName}`;
-}
-
 const rootElement = document.getElementById("root");
 if (rootElement) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(<App />);
 }
+
   </script>
 </body>
 </html>
