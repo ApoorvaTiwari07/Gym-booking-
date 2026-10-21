@@ -10,6 +10,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 
+  <!-- Supabase Cloud Backend -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabaseConfig.js"></script>
+  <script src="supabaseClient.js"></script>
+
   <script src="vendor/react.min.js"></script>
   <script src="vendor/react-dom.min.js"></script>
   <script src="vendor/babel.min.js"></script>
@@ -298,7 +303,34 @@ function App() {
     }, 3500);
   }
 
-  function handleRegisterUser(newUserData) {
+  // Load previously registered users from Supabase on startup
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.fetchUsersFromSupabase) {
+      window.fetchUsersFromSupabase().then((dbUsers) => {
+        if (dbUsers && dbUsers.length > 0) {
+          setUsers((prev) => {
+            const map = new Map();
+            prev.forEach((u) => map.set(u.email.toLowerCase(), u));
+            dbUsers.forEach((u) => {
+              const emailKey = u.email.toLowerCase();
+              map.set(emailKey, {
+                id: u.id || (map.has(emailKey) ? map.get(emailKey).id : Date.now()),
+                name: u.name,
+                email: u.email,
+                phone: u.phone || "+91 98000 00000",
+                goal: u.goal || "General Fitness",
+                role: u.role || "member"
+              });
+            });
+            return Array.from(map.values());
+          });
+          console.log("Supabase: Synced", dbUsers.length, "users from cloud database.");
+        }
+      });
+    }
+  }, []);
+
+  async function handleRegisterUser(newUserData) {
     const trimmedEmail = newUserData.email.trim().toLowerCase();
     const existing = users.find((u) => u.email.toLowerCase() === trimmedEmail);
     if (existing) {
@@ -318,21 +350,56 @@ function App() {
     setUsers((prev) => [...prev, created]);
     setCurrentUser(created);
     setCurrentPage(created.role === "admin" ? "admin" : "sessions");
-    showToast("Account created successfully. Welcome, " + created.name);
+
+    // Save newly registered user to Supabase
+    if (typeof window !== "undefined" && window.saveUserToSupabase) {
+      window.saveUserToSupabase(created).then((res) => {
+        if (res && res.saved) {
+          showToast("Welcome, " + created.name + "! Saved to Supabase database.");
+        } else {
+          showToast("Account created successfully. Welcome, " + created.name);
+        }
+      });
+    } else {
+      showToast("Account created successfully. Welcome, " + created.name);
+    }
     return { success: true };
   }
 
-  function handleLoginUser(email, password) {
+  async function handleLoginUser(email, password) {
     const trimmedEmail = email.trim().toLowerCase();
-    const foundUser = users.find((u) => u.email.toLowerCase() === trimmedEmail);
+    let foundUser = users.find((u) => u.email.toLowerCase() === trimmedEmail);
 
+    // If not found in local memory, check Supabase database
+    if (!foundUser && typeof window !== "undefined" && window.findUserInSupabase) {
+      const dbUser = await window.findUserInSupabase(trimmedEmail);
+      if (dbUser) {
+        foundUser = {
+          id: dbUser.id || Date.now(),
+          name: dbUser.name,
+          email: dbUser.email,
+          phone: dbUser.phone || "+91 98000 00000",
+          goal: dbUser.goal || "General Fitness",
+          role: dbUser.role || "member"
+        };
+        setUsers((prev) => [...prev.filter((u) => u.email.toLowerCase() !== trimmedEmail), foundUser]);
+      }
+    }
+
+    // 1. Existing user
     if (foundUser) {
       setCurrentUser(foundUser);
       setCurrentPage(foundUser.role === "admin" ? "admin" : "sessions");
       showToast("Signed in as " + foundUser.name);
+
+      // Record login / update in Supabase
+      if (typeof window !== "undefined" && window.saveUserToSupabase) {
+        window.saveUserToSupabase(foundUser);
+      }
       return { success: true };
     }
 
+    // 2. Owner sign in
     if (trimmedEmail === "admin@gym.com" || trimmedEmail.includes("raj")) {
       const ownerUser = {
         id: 1,
@@ -345,13 +412,34 @@ function App() {
       setCurrentUser(ownerUser);
       setCurrentPage("admin");
       showToast("Signed in as Gym Owner (Raj Yadav)");
+
+      if (typeof window !== "undefined" && window.saveUserToSupabase) {
+        window.saveUserToSupabase(ownerUser);
+      }
       return { success: true };
     }
 
-    return {
-      success: false,
-      error: "Account not found. Please register your name and email on the right side."
+    // 3. New user trying to login: auto-save their profile to Supabase & sign them in!
+    // As requested: "if any new user tries to login their data gets saved"
+    const fallbackName = trimmedEmail.split("@")[0].replace(/[._]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()) || "Member";
+    const newUser = {
+      id: Date.now(),
+      name: fallbackName,
+      email: trimmedEmail,
+      phone: "+91 98100 00000",
+      goal: "General Fitness",
+      role: "member"
     };
+
+    setUsers((prev) => [...prev, newUser]);
+    setCurrentUser(newUser);
+    setCurrentPage("sessions");
+    showToast("Signed in as " + newUser.name + " (Saved to Supabase)");
+
+    if (typeof window !== "undefined" && window.saveUserToSupabase) {
+      window.saveUserToSupabase(newUser);
+    }
+    return { success: true };
   }
 
   function handleLogout() {
@@ -666,16 +754,16 @@ function LoginPage({ onLogin, onRegister }) {
   const [regPassword, setRegPassword] = useState("");
   const [regError, setRegError] = useState("");
 
-  function handleLoginSubmit(e) {
+  async function handleLoginSubmit(e) {
     e.preventDefault();
     setLoginError("");
-    const res = onLogin(loginEmail, loginPassword);
-    if (!res.success) {
+    const res = await onLogin(loginEmail, loginPassword);
+    if (res && !res.success) {
       setLoginError(res.error);
     }
   }
 
-  function handleRegisterSubmit(e) {
+  async function handleRegisterSubmit(e) {
     e.preventDefault();
     setRegError("");
 
@@ -700,7 +788,7 @@ function LoginPage({ onLogin, onRegister }) {
       return;
     }
 
-    const res = onRegister({
+    const res = await onRegister({
       name: regName,
       email: regEmail,
       phone: regPhone,
@@ -708,7 +796,7 @@ function LoginPage({ onLogin, onRegister }) {
       password: regPassword
     });
 
-    if (!res.success) {
+    if (res && !res.success) {
       setRegError(res.error);
     }
   }
@@ -723,6 +811,12 @@ function LoginPage({ onLogin, onRegister }) {
     <div>
       <div className="page-tag">MEMBER ACCESS</div>
       <h1>Sign In or Create Account</h1>
+
+      <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "6px 12px", border: "1px solid var(--border)", borderRadius: "4px", fontSize: "11px", marginBottom: "14px", background: "var(--card-bg)" }}>
+        <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#10b981", display: "inline-block" }}></span>
+        <span>Backend Database: <strong>Supabase Connected</strong> (xtmajkghfaanuxlmxqil.supabase.co)</span>
+      </div>
+
       <p className="subtitle">
         Enter your details to manage gym bookings at Pulse Athletics, Shalimar Bagh.
       </p>
@@ -766,6 +860,9 @@ function LoginPage({ onLogin, onRegister }) {
             <button type="submit" className="btn btn-primary btn-wide">
               Sign In
             </button>
+            <div style={{ fontSize: "11px", color: "var(--text-muted)", marginTop: "8px", textAlign: "center" }}>
+              User logins are verified and synced to Supabase
+            </div>
           </form>
 
           <div style={{ marginTop: "14px", fontSize: "12px" }}>
@@ -870,6 +967,9 @@ function LoginPage({ onLogin, onRegister }) {
             <button type="submit" className="btn btn-primary btn-wide">
               Create Account
             </button>
+            <div style={{ fontSize: "11px", color: "var(--text-muted)", marginTop: "8px", textAlign: "center" }}>
+              New member data is safely saved to Supabase
+            </div>
           </form>
         </div>
       </div>

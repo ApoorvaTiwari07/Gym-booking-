@@ -37,12 +37,22 @@ A walkthrough of the **Pulse Athletics** website. Built using clean, modern **HT
    - **Attendance Tracking**: Live check-in system with "Present" and "Absent" toggles.
    - **Schedule Class**: Add new sessions within gym timings (10 AM to 10 PM) assigning from registered coaches.
 
+5. **Supabase Cloud Database Backend**:
+   - Integrated with Supabase PostgreSQL database (`https://xtmajkghfaanuxlmxqil.supabase.co`).
+   - Automatically saves and syncs new member registrations and logins to the `users` table.
+   - Zero-dependency client via official Supabase CDN, working on both static edge (Vercel) and local Node.js.
+   - Safe dual-mode operation: synchronizes with Supabase while gracefully falling back to local state if offline.
+
 ---
 
 ## 3. Tech Stack & File Structure
 
-- **`index.html`**: Semantic HTML5 markup, Courier Prime typewriter font from Google Fonts, and React 18 client bundle.
+- **`index.html`**: Semantic HTML5 markup, Courier Prime typewriter font from Google Fonts, Supabase client script, and React 18 client bundle.
 - **`style.css`**: Strict black-and-white minimalist design system with human-typed Courier Prime typography and high-contrast responsive layouts.
-- **`app.jsx`**: Modular React application managing client-side state, owner-only admin route guarding, and `localStorage` persistence.
+- **`app.jsx`**: Modular React application managing client-side state, Supabase auth syncing, owner-only admin route guarding, and local persistence.
+- **`supabaseConfig.js`**: Clean, human-readable Supabase URL and Publishable Key configuration.
+- **`supabaseClient.js`**: Helper methods (`saveUserToSupabase`, `fetchUsersFromSupabase`, `findUserInSupabase`) to interact with Supabase tables.
+- **`supabase_setup.sql`**: Simple 1-click SQL script to create the `users` table and policies in the Supabase SQL editor.
 - **`vercel.json`**: Static edge deployment configuration for zero-cold-start web hosting.
-- **`server.js` & `db.js`**: Node.js/Express REST server with SQLite database for optional local full-stack execution.
+- **`server.js` & `db.js`**: Node.js/Express REST server with SQLite database and Supabase syncing for optional local full-stack execution.
+

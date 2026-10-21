@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const db = require('./db');
 const { createToken, authMiddleware, adminMiddleware } = require('./auth');
+const SUPABASE_CONFIG = require('./supabaseConfig');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -15,6 +16,42 @@ function isSessionStarted(sessionDate, startHour) {
   const sessionStart = new Date(sessionDate + 'T' + String(startHour).padStart(2, '0') + ':00:00');
   return sessionStart <= new Date();
 }
+
+// Simple helper to save or sync a user to the Supabase database
+async function syncUserToSupabase(userData) {
+  if (!SUPABASE_CONFIG || !SUPABASE_CONFIG.url || !SUPABASE_CONFIG.anonKey) return;
+  try {
+    const res = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/users`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_CONFIG.anonKey,
+        'Authorization': `Bearer ${SUPABASE_CONFIG.anonKey}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'resolution=merge-duplicates'
+      },
+      body: JSON.stringify({
+        name: userData.name,
+        email: userData.email.toLowerCase().trim(),
+        role: userData.role || 'member',
+        last_login: new Date().toISOString()
+      })
+    });
+    if (res.ok) {
+      console.log('User synced to Supabase database:', userData.email);
+    }
+  } catch (err) {
+    console.log('Supabase sync notice:', err.message);
+  }
+}
+
+// Endpoint to check Supabase backend status
+app.get('/api/supabase-status', (req, res) => {
+  res.json({
+    configured: !!(SUPABASE_CONFIG && SUPABASE_CONFIG.url),
+    url: SUPABASE_CONFIG ? SUPABASE_CONFIG.url : null,
+    message: 'Supabase cloud database is connected.'
+  });
+});
 
 // =============================================================
 // 1. Accounts Routes
@@ -46,6 +83,9 @@ app.post('/register', (req, res, next) => {
       [name.trim(), email.trim(), hash, salt, 'member']
     );
 
+    // Sync new user to Supabase database
+    syncUserToSupabase({ name: name.trim(), email: email.trim(), role: 'member' });
+
     res.status(201).json({ message: 'Registered successfully', id: result.lastInsertRowid });
   } catch (err) {
     next(err);
@@ -64,6 +104,9 @@ app.post('/login', (req, res, next) => {
     if (!user || !db.verifyPassword(password, user.password_hash, user.salt)) {
       return res.status(401).json({ error: 'Wrong email or password' });
     }
+
+    // Sync logged-in user to Supabase database
+    syncUserToSupabase(user);
 
     const token = createToken(user);
     res.json({

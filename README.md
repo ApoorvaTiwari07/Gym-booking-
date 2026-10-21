@@ -88,3 +88,20 @@ The application includes pre-seeded accounts for testing:
    - Raj Yadav oversees facility operations and trainer shift reports.
    - Tracks weekly shift hours, sessions taken, and client feedback for each coach.
    - Session roster tool to mark members as **Present** or **Absent**.
+
+5. **Supabase Cloud Database Backend**:
+   - Integrated with Supabase PostgreSQL cloud database (`https://xtmajkghfaanuxlmxqil.supabase.co`).
+   - Automatically saves any new user who registers or signs in into the `users` table.
+   - Pre-configured in `supabaseConfig.js` and `supabaseClient.js`.
+   - Includes simple 1-click table setup script in `supabase_setup.sql`.
+   - Safe and reliable with seamless local fallback so the website always runs smoothly.
+
+---
+
+## Supabase Database Setup (1 Minute)
+
+To create the `users` table in your Supabase project:
+1. Open your Supabase project dashboard: [https://supabase.com/dashboard/project/xtmajkghfaanuxlmxqil](https://supabase.com/dashboard/project/xtmajkghfaanuxlmxqil)
+2. Click **SQL Editor** in the left sidebar.
+3. Open `supabase_setup.sql` from this repository, copy the SQL, paste it in the editor, and click **Run**.
+4. That's it! Any new user who logs in or registers on the website will now be stored in your Supabase database.
