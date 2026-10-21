@@ -136,7 +136,6 @@ const INITIAL_ALL_BOOKINGS = [
     userName: "Krish Chhabra",
     userEmail: "krish.chhabra@gmail.com",
     userPhone: "+91 98112 34567",
-    notes: "Bench press form check",
     month: "OCT",
     day: "17",
     fullDate: "Saturday, 17 October 2026",
@@ -156,7 +155,6 @@ const INITIAL_ALL_BOOKINGS = [
     userName: "Priya Tiwari",
     userEmail: "priya.t@gmail.com",
     userPhone: "+91 98765 43210",
-    notes: "Warm up stretch",
     month: "OCT",
     day: "17",
     fullDate: "Saturday, 17 October 2026",
@@ -421,11 +419,24 @@ function App() {
       showToast("Session is already full.");
       return;
     }
-    setSelectedSessionForBooking(session);
+
+    // 1-Click Instant confirmation if user is logged in
+    if (currentUser) {
+      handleConfirmBooking(
+        {
+          name: currentUser.name,
+          email: currentUser.email,
+          phone: currentUser.phone || "+91 98100 00000"
+        },
+        session
+      );
+    } else {
+      setSelectedSessionForBooking(session);
+    }
   }
 
-  function handleConfirmBooking(bookingFormData) {
-    const session = selectedSessionForBooking;
+  function handleConfirmBooking(bookingFormData, targetSession = null) {
+    const session = targetSession || selectedSessionForBooking;
     if (!session) return;
 
     if (session.bookedCount >= session.capacity) {
@@ -450,7 +461,6 @@ function App() {
       userName: bookingFormData.name.trim(),
       userEmail: bookingFormData.email.trim(),
       userPhone: formattedPhone,
-      notes: bookingFormData.notes || "",
       month: "OCT",
       day: "17",
       fullDate: session.displayDate + " 2026",
@@ -478,7 +488,7 @@ function App() {
     }
 
     setSelectedSessionForBooking(null);
-    showToast("Slot booked for " + bookingFormData.name + ". Ref: " + bookingCode);
+    showToast("Slot booked for " + bookingFormData.name + "! Ref: " + bookingCode);
   }
 
   function handleCancelBooking(bookingId, sessionId) {
@@ -946,22 +956,12 @@ function LoginPage({ onLogin, onRegister }) {
 }
 
 function SessionsPage({ sessions, userBookings, onBookSlot, onGoToMyBookings }) {
-  const [activeFilter, setActiveFilter] = useState("all");
-  const [selectedType, setSelectedType] = useState("all");
-
   const bookedSessionIds = new Set(userBookings.map((b) => b.sessionId));
 
-  const filteredSessions = sessions.filter((s) => {
-    if (selectedType !== "all" && s.category !== selectedType) {
-      return false;
-    }
-    if (activeFilter === "today") {
-      return s.displayDate.includes("17");
-    }
-    if (activeFilter === "available") {
-      return s.capacity - s.bookedCount > 0;
-    }
-    return true;
+  // Display all scheduled sessions sorted cleanly in chronological order
+  const sortedSessions = [...sessions].sort((a, b) => {
+    if (a.date !== b.date) return a.date.localeCompare(b.date);
+    return a.startTime.localeCompare(b.startTime);
   });
 
   return (
@@ -978,7 +978,7 @@ function SessionsPage({ sessions, userBookings, onBookSlot, onGoToMyBookings }) 
       <div className="page-tag">TRAINING SESSIONS</div>
       <h1>Book Workout Slots</h1>
       <p className="subtitle">
-        Browse sessions taking place between 10 AM to 10 PM and book your slot.
+        Browse scheduled sessions taking place between 10 AM to 10 PM. Single-click to reserve your slot.
       </p>
 
       {userBookings.length > 0 && (
@@ -992,42 +992,13 @@ function SessionsPage({ sessions, userBookings, onBookSlot, onGoToMyBookings }) 
         </div>
       )}
 
-      <div className="filters-bar">
-        <div className="filter-pills">
-          <button
-            className={"filter-pill " + (activeFilter === "all" ? "active" : "")}
-            onClick={() => setActiveFilter("all")}
-          >
-            All Sessions
-          </button>
-          <button
-            className={"filter-pill " + (activeFilter === "today" ? "active" : "")}
-            onClick={() => setActiveFilter("today")}
-          >
-            Today (17 Oct)
-          </button>
-          <button
-            className={"filter-pill " + (activeFilter === "available" ? "active" : "")}
-            onClick={() => setActiveFilter("available")}
-          >
-            Open Slots Only
-          </button>
-        </div>
-
-        <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px" }}>
-          <label htmlFor="sessionType" style={{ margin: 0 }}>Category:</label>
-          <select
-            id="sessionType"
-            value={selectedType}
-            onChange={(e) => setSelectedType(e.target.value)}
-          >
-            <option value="all">All</option>
-            <option value="Strength">Strength</option>
-            <option value="HIIT">HIIT</option>
-            <option value="Yoga">Yoga</option>
-            <option value="Cycling">Cycling</option>
-          </select>
-        </div>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px", padding: "10px 14px", border: "1px solid var(--border)", background: "var(--card-bg)" }}>
+        <span style={{ fontSize: "12px", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+          All Scheduled Classes (Chronological Order)
+        </span>
+        <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>
+          {sortedSessions.length} sessions listed
+        </span>
       </div>
 
       <div className="table-container">
@@ -1042,7 +1013,7 @@ function SessionsPage({ sessions, userBookings, onBookSlot, onGoToMyBookings }) 
             </tr>
           </thead>
           <tbody>
-            {filteredSessions.map((s) => {
+            {sortedSessions.map((s) => {
               const isBooked = bookedSessionIds.has(s.id);
               const availableSeats = s.capacity - s.bookedCount;
               const isFull = availableSeats <= 0;
@@ -1088,7 +1059,7 @@ function SessionsPage({ sessions, userBookings, onBookSlot, onGoToMyBookings }) 
         </table>
 
         <div className="table-footer">
-          <span>{filteredSessions.length} sessions listed</span>
+          <span>{sortedSessions.length} sessions listed</span>
           <span>Timings: 10:00 AM to 10:00 PM</span>
         </div>
       </div>
@@ -1105,7 +1076,6 @@ function BookingModal({ session, currentUser, onClose, onConfirm }) {
     }
     return "";
   });
-  const [notes, setNotes] = useState("");
   const [formError, setFormError] = useState("");
 
   const availableSeats = session.capacity - session.bookedCount;
@@ -1127,14 +1097,14 @@ function BookingModal({ session, currentUser, onClose, onConfirm }) {
       return;
     }
 
-    onConfirm({ name, email, phone: cleanPhone, notes });
+    onConfirm({ name, email, phone: cleanPhone });
   }
 
   return (
     <div className="modal-backdrop" onClick={onClose}>
       <div className="modal-box" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <div className="modal-title">Book Session Slot</div>
+          <div className="modal-title">Confirm Slot Booking</div>
           <button className="modal-close-btn" onClick={onClose}>Close</button>
         </div>
 
@@ -1191,16 +1161,6 @@ function BookingModal({ session, currentUser, onClose, onConfirm }) {
                   required
                 />
               </div>
-            </div>
-
-            <div className="form-group">
-              <label>Notes (Optional)</label>
-              <input
-                type="text"
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                placeholder="e.g. Beginner, back issue, mat request"
-              />
             </div>
 
             {formError && <div className="field-error">{formError}</div>}
@@ -1273,11 +1233,6 @@ function MyBookingsPage({ currentUser, userBookings, pastSessions, onCancelBooki
                 <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>
                   {b.location} | Trainer: {b.coach} | Ref: {b.bookingCode}
                 </div>
-                {b.notes && (
-                  <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>
-                    Notes: {b.notes}
-                  </div>
-                )}
               </div>
             </div>
 

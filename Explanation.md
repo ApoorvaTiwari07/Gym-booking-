@@ -23,8 +23,8 @@ A walkthrough of the **Pulse Athletics** website. Built using clean, modern **HT
 
 2. **Classes & Schedule (10 AM &ndash; 10 PM)**:
    - Schedule table showing class times, session names, certified coaches, locations (Studio A, Studio B, Cycle Arena), and seat availability.
-   - Interactive filters: Category dropdown (Strength, HIIT, Yoga, Cycling) and date pills (All, Today, Available).
-   - Real-time seat updates and booking modals capturing attendee contact info.
+   - Clean, chronological schedule display without unnecessary filter clutter.
+   - 1-Click instant slot booking for signed-in members with zero health notes required.
 
 3. **My Bookings Screen**:
    - Confirmed class reservations with unique pass codes (e.g. `PA-7102`).

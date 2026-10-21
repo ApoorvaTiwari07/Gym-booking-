@@ -78,10 +78,11 @@ The application includes pre-seeded accounts for testing:
 
 2. **Session Scheduling (10 AM &ndash; 10 PM)**:
    - All classes scheduled within the gym's daily operating hours (10:00 AM to 10:00 PM).
-   - Filter by date, category (Strength, HIIT, Yoga, Cycling), or slot availability.
+   - Displayed cleanly in chronological order for effortless schedule browsing.
 
-3. **Slot Booking Modal**:
-   - Interactive booking popup capturing Attendee Full Name, Email, Phone, and optional workout/health notes for the coach.
+3. **1-Click Slot Booking**:
+   - Single-click instant slot confirmation for signed-in members with zero unnecessary forms.
+   - Fast attendee confirmation for guests with no health notes required.
    - Real-time seat decrementing and unique pass code generation (e.g. `PA-7102`).
 
 4. **Owner Management &amp; Trainer Reports**:
